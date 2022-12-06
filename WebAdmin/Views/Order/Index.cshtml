@@ -16,7 +16,7 @@
 </div>
 <div class="card">
     <div class="card-body">
-        <div class="table-responsive">
+        <div class="table-responsive text-center">
             <table class="table table-hover e-commerce-table">
                 <thead>
                     <tr>
@@ -35,7 +35,9 @@
                         {
 
                             <tr>
-                                <td>@item.OrderId</td>
+                                <td>
+                                    <a class="btn btn-primary btn-tone m-r-5" asp-controller="Order" asp-action="Details" asp-route-id="@item.OrderId">@item.OrderId</a>
+                                </td>
                                 <td>@item.UserName</td>
                                 <td>@item.OrderDate</td>
                                 <td>@item.TotalMoney.ToString("#,##0") VNĐ</td>
@@ -57,7 +59,6 @@
                                     }
                                 </td>
                                 <td>
-                                    <a class="btn btn-primary btn-tone m-r-5" asp-controller="Order" asp-action="Details" asp-route-id="@item.OrderId">Chi tiết</a>
                                     <a data-target="#modal-header" data-toggle="modal" class="btn btn-secondary btn-tone m-r-5" asp-controller="Order" asp-action="ChangeStatus" asp-route-id="@item.OrderId">Cập nhật trạng thái</a>
                                 </td>
                             </tr>
@@ -68,7 +69,7 @@
             </table>
             <div aria-label="Page navigation example">
                 <ul class="pagination">
-                    <pager class="pager-container" list="@Model"  asp-controller="Order" asp-action="Index" />
+                    <pager class="pager-container" list="@Model" asp-controller="Order" asp-action="Index" />
                 </ul>
             </div>
         </div>
@@ -77,14 +78,13 @@
 <div id="modal-header" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-
         </div>
     </div>
 </div>
 @section Script {
     <script>
         $('#modal-header').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget); 
+            var button = $(event.relatedTarget);
             var url = button.attr("href");
             var modal = $(this);
             modal.find('.modal-content').load(url);
