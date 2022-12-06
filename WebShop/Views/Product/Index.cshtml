@@ -1,0 +1,295 @@
+﻿@model List<SharedObjects.ValueObjects.VCategory>
+@{
+    ViewData["Title"] = "Danh sách sản phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int totalProduct = ViewBag.count;
+}
+<div class="ltn__utilize-overlay"></div>
+<!-- BREADCRUMB AREA START -->
+<div class="ltn__breadcrumb-area ltn__breadcrumb-area-2 ltn__breadcrumb-color-white bg-overlay-theme-black-90 bg-image plr--9---" data-bg="img/bg/9.jpeg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ltn__breadcrumb-inner ltn__breadcrumb-inner-2 justify-content-between">
+                    <div class="section-title-area ltn__section-title-2">
+                        <h6 class="section-subtitle ltn__secondary-color">//  Welcome to our company</h6>
+                        <h1 class="section-title white-color">Danh sách sản phẩm</h1>
+                    </div>
+                    <div class="ltn__breadcrumb-list">
+                        <ul>
+                            <li><a asp-action="Index" asp-controller="Home">Trang chủ</a></li>
+                            <li>Danh sách sản phẩm</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- BREADCRUMB AREA END -->
+<!-- PRODUCT DETAILS AREA START -->
+<div class="ltn__product-area ltn__product-gutter">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 order-lg-2 mb-120">
+                <div class="ltn__shop-options">
+                    <ul>
+                        <li>
+                            <div class="short-by text-center">
+                                <select class="nice-select" id="txtsort" name="txtsort">
+                                    <option selected value="">Giá giảm dần </option>
+                                    <option value="DOWN">Giá tăng dần</option>
+                                </select>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="short-by text-center">
+                                <select class="nice-select" id="txtCatID" name="txtCatID">
+                                    <option selected value="">Chọn tất cả danh mục</option>
+                                    @foreach (var item in Model)
+                                    {
+                                        <option value="@item.CatId">@item.CatName</option>
+                                    }
+                                </select>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="showing-product-number text-right">
+                                <span>Hiển thị 9 trên @totalProduct sản phẩm</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tab-content">
+                    <div class="row" id="table-content">
+
+                    </div>
+                        <!-- ltn__product-item -->
+                        
+                        <!-- ltn__product-item -->
+                    
+                </div>
+                <div class="ltn__pagination-area text-center">
+                    <div class="ltn__pagination pagination" id="pagination">
+                        @*<ul>
+                            <li><a href="#"><i class="fas fa-angle-double-left"></i></a></li>
+                            <li><a href="#">1</a></li>
+                            <li class="active"><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">...</a></li>
+                            <li><a href="#">10</a></li>
+                            <li><a href="#"><i class="fas fa-angle-double-right"></i></a></li>
+                        </ul>*@
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4  mb-120">
+                <aside class="sidebar ltn__shop-sidebar">
+
+                    <!-- Search Widget -->
+                    <div class="widget ltn__search-widget">
+                        <h4 class="ltn__widget-title ltn__widget-title-border">Tìm kiếm sản phẩm</h4>
+                        <form action="#">
+                            <i class="prefix-icon anticon anticon-search opacity-04"></i>
+                            <input id="search" name="search" type="text" class="form-control" placeholder="">
+                        </form>
+                    </div>
+
+                    <!-- Tagcloud Widget -->
+                    <div class="widget ltn__tagcloud-widget">
+                        <h4 class="ltn__widget-title ltn__widget-title-border">Tags</h4>
+                        <ul>
+                            <li><a href="#">Popular</a></li>
+                            <li><a href="#">desgin</a></li>
+                            <li><a href="#">ux</a></li>
+                            <li><a href="#">usability</a></li>
+                            <li><a href="#">develop</a></li>
+                            <li><a href="#">icon</a></li>
+                            <li><a href="#">Car</a></li>
+                            <li><a href="#">Service</a></li>
+                            <li><a href="#">Repairs</a></li>
+                            <li><a href="#">Auto Parts</a></li>
+                            <li><a href="#">Oil</a></li>
+                            <li><a href="#">Dealer</a></li>
+                            <li><a href="#">Oil Change</a></li>
+                            <li><a href="#">Body Color</a></li>
+                        </ul>
+                    </div>
+                    <!-- Size Widget -->
+                </aside>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- PRODUCT DETAILS AREA END -->
+<!-- FEATURE AREA START ( Feature - 3) -->
+<div class="ltn__feature-area before-bg-bottom-2 mb--30--- plr--5">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ltn__feature-item-box-wrap ltn__border-between-column white-bg">
+                    <div class="row">
+                        <div class="col-xl-3 col-md-6 col-12">
+                            <div class="ltn__feature-item ltn__feature-item-8">
+                                <div class="ltn__feature-icon">
+                                    <img src="img/icons/icon-img/11.png" alt="#">
+                                </div>
+                                <div class="ltn__feature-info">
+                                    <h4>Curated Products</h4>
+                                    <p>
+                                        Provide Curated Products for
+                                        all product over $100
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 col-12">
+                            <div class="ltn__feature-item ltn__feature-item-8">
+                                <div class="ltn__feature-icon">
+                                    <img src="img/icons/icon-img/12.png" alt="#">
+                                </div>
+                                <div class="ltn__feature-info">
+                                    <h4>Handmade</h4>
+                                    <p>
+                                        We ensure the product quality
+                                        that is our main goal
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 col-12">
+                            <div class="ltn__feature-item ltn__feature-item-8">
+                                <div class="ltn__feature-icon">
+                                    <img src="img/icons/icon-img/13.png" alt="#">
+                                </div>
+                                <div class="ltn__feature-info">
+                                    <h4>Natural Food</h4>
+                                    <p>
+                                        Return product within 3 days
+                                        for any product you buy
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 col-12">
+                            <div class="ltn__feature-item ltn__feature-item-8">
+                                <div class="ltn__feature-icon">
+                                    <img src="img/icons/icon-img/14.png" alt="#">
+                                </div>
+                                <div class="ltn__feature-info">
+                                    <h4>Free home delivery</h4>
+                                    <p>
+                                        We ensure the product quality
+                                        that you can trust easily
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+@section Script{
+    <script src="~/lib/jquery.twbsPagination.min.js"></script>
+    <script>let obj = {
+            search: '',
+            catId: null,
+            sortPrice: '',
+            pageSize: 9,
+            pageIndex: 0
+        }
+        getAndDisplayData(obj);
+
+        $("#txtsort").change(delay(function () {
+            obj.sortPrice = $("#txtsort").val();
+            getAndDisplayData(obj);
+        }, 200));
+
+        $("#txtCatID").change(delay(function () {
+            obj.catId = $("#txtCatID").val();
+            if (obj.catId == "") {
+                obj.catId = null
+            }
+            getAndDisplayData(obj);
+        }, 200));
+
+        $("#search").keyup(delay(function () {
+            obj.search = $("#search").val().toLowerCase();
+            getAndDisplayData(obj);
+        }, 200));
+
+        function delay(callback, ms) {
+            var timer = 0;
+            return function () {
+                var context = this, args = arguments;
+                clearTimeout(timer);
+                timer = setTimeout(function () {
+                    callback.apply(context, args);
+                }, ms || 0);
+            };
+        }
+
+        function changePageIndex(pageIndex) {
+            obj.pageIndex = pageIndex;
+            getAndDisplayData(obj);
+        }
+
+        function getAndDisplayData(obj) {
+            $.ajax({
+                type: 'post',
+                url: '/Product/CountPagination',
+                dataType: 'json',
+                data: JSON.stringify(obj),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    let totalBlog = parseInt(data.result);
+                    $.ajax({
+                        type: 'post',
+                        url: '/Product/GetPagination_Pta',
+                        data: JSON.stringify(obj),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            $("#table-content").html(data);
+                            paging(totalBlog, function () { }, obj)
+                        }
+                    });
+
+                }
+            });
+        }
+        function paging(totalRow, callback, changePageSize) {
+            var totalPage = 0;
+            if (totalRow < obj.pageSize) {
+                totalPage = 1
+            }
+            else {
+                totalPage = Math.ceil(totalRow / obj.pageSize);
+            }
+            if ($('#pagination a').length === 0 || changePageSize === true) {
+                $('#pagination').empty();
+                $('#pagination').removeData("twbs-pagination");
+                $('#pagination').unbind("page");
+            }
+            $('#pagination').twbsPagination({
+                totalPages: totalPage,
+                first: "<<",
+                next: " >",
+                last: ">>",
+                prev: "<",
+                visiblePages: 2,
+                onPageClick: function (event, page) {
+                    obj.pageIndex = page - 1;
+                    getAndDisplayData(obj);
+
+                }
+            });
+        }</script>
+}

@@ -1,0 +1,111 @@
+﻿@{
+    ViewData["Title"] = "Quản lý người dùng thuộc quyền";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@section Script{
+    <script src="~/js/manage-role.js"></script>
+}
+@{
+    var usersInRole = ViewBag.usersInRole as List<SharedObjects.Models.AppUser>;
+    var usersNotInRole = ViewBag.usersNotInRole as List<SharedObjects.Models.AppUser>;
+
+}
+<div class="page-container">
+
+    <div class="page-content">
+
+        <!--RenderBody()-->
+
+        <div class="container-fluid">
+            <div class="row">
+
+                <div class="col-md-12">
+
+                    <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                    <div class="portlet light" style="height:2000px">
+                        <div class="portlet-title">
+
+                            <div class="caption col-md-12">
+                                <span class="caption-subject font-green-sharp bold uppercase">
+                                    Quản lý người dùng thuộc quyền
+                                </span>
+                                <p id="txt-roleName">@ViewBag.roleName</p>
+                            </div>
+
+                            
+                        </div>
+
+                        <div class="table-responsive col-md-6">
+                            <h2>Người dùng thuộc quyền</h2>
+                            <table class="table table-bordered table-hover table-responsive">
+                                <thead>
+                                    <tr class="text-center">
+
+                                        <td>Tên người dùng</td>
+                                        <td>Tác vụ</td>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-content">
+                                    @foreach (var item in usersInRole)
+                                    {
+                                        <tr class="text-center">
+
+                                            <td>
+                                                @item.UserName
+                                            </td>
+                                            <td class="text-center">
+
+                                                <a data-user="@item.UserName" class="btn default btn-xs purple remove" > <span class="glyphicon glyphicon-minus">Gỡ quyền</span></a>
+
+
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-responsive col-md-6">
+                            <h2>Người dùng KHÔNG thuộc quyền</h2>
+                            <table class="table table-bordered  table-responsive">
+                                <thead>
+                                    <tr class="text-center">
+
+                                        <td>Tên người dùng</td>
+                                        <td>Tác vụ</td>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-content">
+                                    @foreach (var item in usersNotInRole)
+                                    {
+                                        <tr class="text-center">
+
+                                            <td>
+                                                @item.UserName
+                                            </td>
+                                            <td class="text-center">
+
+                                                <a data-user="@item.UserName" class="btn default btn-xs purple add" > <span class="glyphicon glyphicon-plus">Thêm quyền</span></a>
+
+
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        <!--Modal arear-->
+
+
+
+    </div>
+</div>

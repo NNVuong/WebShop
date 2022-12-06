@@ -1,0 +1,204 @@
+﻿@model List<SharedObjects.ValueObjects.VCategory>
+@{
+    ViewData["Title"] = "Trang quản lý sản phẩm";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
+            <span class="breadcrumb-item active">Danh sách sản phẩm</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row m-b-30">
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="input-affix m-v-10">
+                            <i class="prefix-icon anticon anticon-search opacity-04"></i>
+                            <input id="search" name="search" type="text" class="form-control" placeholder="Tìm kiếm sản phẩm">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-affix m-v-10">
+                            <select class="custom-select" id="txtCatID" name="txtCatID" style="min-width: 200px;">
+                                <option selected value="">Chọn tất cả danh mục</option>
+                                @foreach (var item in Model)
+                                {
+                                    <option value="@item.CatId">@item.CatName</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-affix m-v-10">
+                            <select class="custom-select" id="txtsort" name="txtsort" style="min-width: 200px;">
+                                <option selected value="">Giá giảm dần </option>
+                                <option value="DOWN">Giá tăng dần</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 text-right">
+                <a class="btn btn-primary" asp-controller="Product" asp-action="Add"><i class="anticon anticon-plus-circle m-r-5"></i><span>Thêm sản phẩm</span></a>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover e-commerce-table">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Ảnh đại diện</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Danh mục</th>
+                        <th>Giá</th>
+                        <th>Tồn kho</th>
+                        <th>Trạng thái</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="table-content">
+
+                </tbody>
+            </table>
+            <div class="pagination" id="pagination">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Script{
+    <script src="~/lib/jquery.twbsPagination.min.js"></script>
+    <script>let obj = {
+            search: '',
+            catId: null,
+            sortPrice: '',
+            pageSize: 10,
+            pageIndex: 0
+        }
+        getAndDisplayData(obj);
+
+        $("#txtsort").change(delay(function () {
+            obj.sortPrice = $("#txtsort").val();
+            getAndDisplayData(obj);
+        }, 200));
+
+        $("#txtCatID").change(delay(function () {
+            obj.catId = $("#txtCatID").val();
+            if (obj.catId == "")
+            {
+                obj.catId = null
+            }
+            getAndDisplayData(obj);
+        },200));
+
+        $("#search").keyup(delay(function () {
+            obj.search = $("#search").val().toLowerCase();
+            getAndDisplayData(obj);
+        }, 200));
+
+        function delay(callback, ms) {
+            var timer = 0;
+            return function () {
+                var context = this, args = arguments;
+                clearTimeout(timer);
+                timer = setTimeout(function () {
+                    callback.apply(context, args);
+                }, ms || 0);
+            };
+        }
+
+        function changePageIndex(pageIndex) {
+            obj.pageIndex = pageIndex;
+            getAndDisplayData(obj);
+        }
+
+        function getAndDisplayData(obj) {
+            $.ajax({
+                type: 'post',
+                url: '/Product/CountPagination',
+                dataType: 'json',
+                data: JSON.stringify(obj),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    let totalBlog = parseInt(data.result);
+                    $.ajax({
+                        type: 'post',
+                        url: '/Product/GetPagination_Pta',
+                        data: JSON.stringify(obj),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            $("#table-content").html(data);
+                            paging(totalBlog, function () { }, obj)
+                        }
+                    });
+
+                }
+            });
+        }
+        function paging(totalRow, callback, changePageSize) {
+            var totalPage = 0;
+            if (totalRow < obj.pageSize) {
+                totalPage = 1
+            }
+            else {
+                totalPage = Math.ceil(totalRow / obj.pageSize);
+            }
+            if ($('#pagination a').length === 0 || changePageSize === true) {
+                $('#pagination').empty();
+                $('#pagination').removeData("twbs-pagination");
+                $('#pagination').unbind("page");
+            }
+            $('#pagination').twbsPagination({
+                totalPages: totalPage,
+                first: "<<",
+                next: " >",
+                last: ">>",
+                prev: "<",
+                visiblePages: 2,
+                onPageClick: function (event, page) {
+                    obj.pageIndex = page - 1;
+                    getAndDisplayData(obj);
+
+                }
+            });
+        }
+
+
+
+        $('body').off('click', '.delete').on('click', '.delete', ConfirmDelete);
+        function ConfirmDelete() {
+            var tranferId = $(this).data('id');
+            bootbox.confirm("Bạn chắc chắn muốn xóa", function (result) {
+                if (result) {
+                    Delete(tranferId)
+                }
+            })
+        }
+        function Delete(transferId) {
+            $.ajax({
+                type: 'post',
+                url: '/Product/Delete',
+                dataType: 'json',
+                data: { productId: transferId },
+                success: function (response) {
+
+                    if (response.statusCode == 200) {
+                        bootbox.alert("Xóa thành công", function () {
+                            location.reload()
+                        })
+                    } else {
+                        bootbox.alert("Xảy ra lỗi")
+                    }
+                }
+            })
+        }
+    </script>
+}

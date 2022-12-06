@@ -1,0 +1,42 @@
+﻿@model List<SharedObjects.ValueObjects.VCategory>
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+        string url = $"{HostConfig.Domain}/images/category/{item.Thumb}";
+        <tr>
+            <td>@item.CatId</td>
+            <td>
+                <a href="#">@item.CatName</a>
+            </td>
+            <td>
+                <div class="d-flex align-items-center">
+                    <img class="img-fluid rounded" src="@url" style="max-width: 60px" alt="">
+                </div>
+            </td>
+            <td>
+                @if (item.Published == true)
+                {
+
+
+                    <div class="d-flex align-items-center">
+                        <div class="badge badge-success badge-dot m-r-10"></div>
+                        <div>Public</div>
+                    </div> }
+                else
+                {
+                    <div class="d-flex align-items-center">
+                        <div class="badge badge-success badge-dot m-r-10"></div>
+                        <div>Non-Public</div>
+                    </div>}
+
+
+            </td>
+
+            <td>
+                <a class="btn btn-secondary btn-tone m-r-5" asp-controller="Category" asp-action="Update" asp-route-catId="@item.CatId">Sửa</a>
+                <a class="btn btn-success btn-tone m-r-5 delete" data-id="@item.CatId">Xóa</a>
+            </td>
+        </tr>
+    }
+}

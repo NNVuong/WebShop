@@ -1,0 +1,54 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RollForward>Major</RollForward>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Service\Service.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\SharedObjects\SharedObjects.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" />
+    <None Remove="Microsoft.VisualStudio.Web.CodeGeneration.Design" />
+    <None Remove="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <None Remove="Views\Product\" />
+    <None Remove="AspNetCoreHero.ToastNotification" />
+    <None Remove="Views\Account\" />
+    <None Remove="Views\ShoppingCart\" />
+    <None Remove="Controllers\Components\" />
+    <None Remove="Views\Shared\Components\" />
+    <None Remove="Views\Shared\Components\HeaderCart\" />
+    <None Remove="Views\Shared\Components\NumberCart\" />
+    <None Remove="Views\Checkout\" />
+    <None Remove="Views\DonHang\" />
+    <None Remove="PagedList.Core.Mvc" />
+    <None Remove="Views\New\" />
+    <None Remove="Views\WishList\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.17" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.17" />
+    <PackageReference Include="AspNetCoreHero.ToastNotification" Version="1.1.0" />
+    <PackageReference Include="PagedList.Core.Mvc" Version="3.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Product\" />
+    <Folder Include="Views\Account\" />
+    <Folder Include="Views\ShoppingCart\" />
+    <Folder Include="Controllers\Components\" />
+    <Folder Include="Views\Shared\Components\" />
+    <Folder Include="Views\Shared\Components\HeaderCart\" />
+    <Folder Include="Views\Shared\Components\NumberCart\" />
+    <Folder Include="Views\Checkout\" />
+    <Folder Include="Views\DonHang\" />
+    <Folder Include="Views\New\" />
+    <Folder Include="Views\WishList\" />
+  </ItemGroup>
+</Project>

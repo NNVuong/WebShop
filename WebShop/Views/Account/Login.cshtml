@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Đăng nhập";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model SharedObjects.ViewModels.LoginViewModel
+<div class="ltn__login-area pb-65">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="account-login-inner">
+                    <form method="post" class="ltn__form-box contact-form-box">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <input asp-for="UserNameOrEmail" type="text" placeholder="Tài khoản hoặc Email">
+                        <input asp-for="Password" type="password" name="password" placeholder="Mật khẩu">
+                        <div class="btn-wrapper mt-0">
+                            <button class="theme-btn-1 btn btn-block" type="submit">Đăng nhập</button>
+                        </div>
+                        <div class="go-to-btn mt-20">
+                            <a href="/dang-ky.html"><small>Tạo mới tài khoản</small></a>
+                        </div>
+                        <div class="go-to-btn mt-20">
+                            <a href="#"><small>Quên mật khẩu?</small></a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

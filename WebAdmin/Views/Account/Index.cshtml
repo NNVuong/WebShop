@@ -1,0 +1,87 @@
+﻿@{
+    ViewData["Title"] = "Danh sách tài khoản quản trị";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    int CurrentPage = ViewBag.CurrentPage;
+}
+@model PagedList.Core.IPagedList<SharedObjects.Models.AppUser>
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
+            <span class="breadcrumb-item active">Danh sách tài khoản : Trang @CurrentPage</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row m-b-30">
+            <div class="col-lg-8">
+                <a class="btn btn-primary" asp-controller="Account" asp-action="Add"><i class="anticon anticon-plus-circle m-r-5"></i><span>Tạo mới tài khoản</span></a>
+            </div>
+            <div class="col-lg-4 text-right">
+
+            </div>
+        </div>
+        @*<div class="row m-b-30">
+                <div class="col-lg-12">
+                    <div class="d-md-flex">
+                        <div class="m-b-10 m-r-15">
+                            <select class="custom-select" id="idrole" name="idrole" style="min-width: 200px;" asp-items="ViewBag.QuyenTruyCap">
+                                <option value="0" disabled selected>Chọn quyền truy cập</option>
+                            </select>
+
+                        </div>
+                        <div class="m-b-10">
+                            <select class="custom-select" id="idstatus" name="idstatus" style="min-width: 200px;" asp-items="ViewBag.lsTrangThai">
+                                <option value="" disabled selected>Chọn trạng thái</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+            </div>*@
+        <div class="table-responsive">
+            <table class="table table-hover e-commerce-table">
+                <thead>
+                    <tr>
+                        <th>Họ và tên</th>
+                        <th>Email</th>
+                        <th>Điện thoại</th>
+                        @*<th>Quyền truy cập</th>*@
+                        @*<th>Trạng thái</th>*@
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            string url = $"{HostConfig.Domain}/images/account/{item.Avatar}";
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img class="img-fluid rounded" src="@url" style="max-width: 60px" alt="">
+                                        <h6 class="m-b-0 m-l-10">@item.UserName</h6>
+                                    </div>
+                                </td>
+                                <td>@item.Email</td>
+                                <td>@item.PhoneNumber</td>
+                                <td>
+                                    <a class="btn btn-primary btn-tone m-r-5" asp-controller="Account" asp-action="Detail" asp-route-userId="@item.Id">Chi tiết</a>
+                                    <a class="btn btn-success btn-tone m-r-5" asp-controller="Account" asp-action="Delete" asp-route-userId="@item.Id">Xóa</a>
+
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            <div aria-label="Page navigation example">
+                <ul class="pagination">
+                    <pager class="pager-container" list="@Model" asp-controller="Account" asp-action="Index" />
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,120 @@
+﻿@model PagedList.Core.IPagedList<SharedObjects.ValueObjects.VNew>
+@{
+    int CurrentPage = ViewBag.CurrentPage;
+    ViewData["Title"] = "Danh sách tin tức " + CurrentPage;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
+            <span class="breadcrumb-item active">Danh sách tin tức : Trang @CurrentPage</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row m-b-30">
+            <div class="col-lg-8">
+                <a class="btn btn-primary" asp-controller="New" asp-action="Add"><i class="anticon anticon-plus-circle m-r-5"></i><span>Tạo mới tin tức</span></a>
+            </div>
+            <div class="col-lg-4 text-right">
+
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover e-commerce-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Ảnh đại diện</th>
+                        <th>Tiêu đề</th>
+                        <th>Ngày tạo</th>
+                        <th>Hiển thị bảng tin</th>
+                        <th>#</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            string url = $"{HostConfig.Domain}/images/new/{item.Thumb}";
+                            <tr>
+                                <td>@item.PostId</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img class="img-fluid rounded" src="@url" style="max-width: 60px; height :60px" alt="">
+                                    </div>
+                                </td>
+                                <td>@item.Title</td>
+                                <td>@item.CreatedDate</td>
+                                <td>
+                                    @if (item.IsNewFeed == true)
+                                    {
+
+
+                                        <div class="d-flex align-items-center">
+                                            <div class="badge badge-success badge-dot m-r-10"></div>
+                                            <div>Có</div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="d-flex align-items-center">
+                                            <div class="badge badge-danger badge-dot m-r-10"></div>
+                                            <div>Không</div>
+                                        </div>
+                                    }
+                                </td>
+                                <td>
+                                    <a class="btn btn-secondary btn-tone m-r-5" asp-controller="New" asp-action="Update" asp-route-id="@item.PostId">Cập nhật</a>
+                                    <a class="btn btn-success btn-tone m-r-5 delete" data-id="@item.PostId">Xóa</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            <div aria-label="Page navigation example">
+                <ul class="pagination">
+                    <pager class="pager-container" list="@Model" asp-controller="New" asp-action="Index" />
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+@section Script
+{
+<script>
+    $('body').off('click', '.delete').on('click', '.delete', ConfirmDelete);
+    function ConfirmDelete() {
+        var tranferId = $(this).data('id');
+        bootbox.confirm("Bạn chắc chắn muốn xóa", function (result) {
+            if (result) {
+                Delete(tranferId)
+            }
+        })
+    }
+    function Delete(transferId) {
+        $.ajax({
+            type: 'post',
+            url: '/New/Delete',
+            dataType: 'json',
+            data: { id: transferId },
+            success: function (response) {
+
+                if (response.statusCode == 200) {
+                    bootbox.alert("Xóa thành công", function () {
+                        location.reload()
+                    })
+                } else {
+                    bootbox.alert("Xảy ra lỗi")
+                }
+            }
+        })
+    }
+</script>
+}

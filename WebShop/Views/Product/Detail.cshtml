@@ -1,0 +1,385 @@
+﻿@model SharedObjects.ValueObjects.VProduct
+@{
+    ViewData["Title"] = $"Chi tiết sản phẩm : {Model.ProductName}";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var images = ViewBag.image as List<SharedObjects.ValueObjects.VProductImage>;
+    var productRandom = ViewBag.productRandom as IEnumerable<SharedObjects.ValueObjects.VProduct>;
+    string avatar = $"{HostConfig.Domain}/images/product/{Model.Avatar}";
+}
+@section Script{
+    <script src="~/js/CartItem.js"></script>
+    <script src="~/js/WishList.js"></script>
+}
+<div class="ltn__breadcrumb-area ltn__breadcrumb-area-2 ltn__breadcrumb-color-white bg-overlay-theme-black-90 bg-image plr--9---" data-bg="/img/bg/9.jpeg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ltn__breadcrumb-inner ltn__breadcrumb-inner-2 justify-content-between">
+                    <div class="section-title-area ltn__section-title-2">
+                        <h6 class="section-subtitle ltn__secondary-color">//  Welcome to our company</h6>
+                        <h1 class="section-title white-color">Chi tiết sản phẩm</h1>
+                    </div>
+                    <div class="ltn__breadcrumb-list">
+                        <ul>
+                            <li><a asp-action="Index" asp-controller="Home">Trang chủ</a></li>
+                            <li>Chi tiết sản phẩm</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ltn__shop-details-area pb-85">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="ltn__shop-details-inner mb-60">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="ltn__shop-details-img-gallery">
+                                <div class="ltn__shop-details-large-img">
+                                    @foreach (var i in images)
+                                    {
+                                        string url = $"{HostConfig.Domain}/images/product/{i.ImageName}";
+                                        <div class="single-large-img">
+                                            <a href="@url" data-rel="lightcase:myCollection">
+                                                <img src="@url" width="500" height="500" alt="Image">
+                                            </a>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="ltn__shop-details-small-img slick-arrow-2">
+                                    @foreach (var i in images)
+                                    {
+                                        string url = $"{HostConfig.Domain}/images/product/{i.ImageName}";
+                                        <div class="single-small-img">
+                                            <img width="100" height="100" src="@url" alt="Image">
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="modal-product-info shop-details-info pl-0">
+                                @*<div class="product-ratting">
+                                    <ul>
+                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                        <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
+                                        <li><a href="#"><i class="far fa-star"></i></a></li>
+                                        <li class="review-total"> <a href="#"> ( 95 Reviews )</a></li>
+                                    </ul>
+                                </div>*@
+                                <h3>@Model.ProductName</h3>
+                                <div class="product-price">
+                                    <span>@Model.Price.Value.ToString("#,##0") VNĐ</span>
+                                </div>
+                                <div class="modal-product-meta ltn__product-details-menu-1">
+                                    <ul>
+                                        <li>
+                                            <strong>Danh mục:</strong>
+                                            <span>
+                                                <a href="#">@Model.CatName</a>
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="ltn__product-details-menu-2">
+                                    <ul>
+                                        <li>
+                                            <div class="cart-plus-minus">
+                                                <input id="txtsoLuong" type="text" value="1" min="1" name="txtsoLuong" class="cart-plus-minus-box">
+                                            </div>
+                                        </li>
+                                        <li class="add-to-cart">
+                                            <a href="#" class="theme-btn-1 btn btn-effect-1" title="Add to Cart" data-toggle="modal" data-target="#add_to_cart_modal">
+                                                <input hidden asp-for="ProductId"/>
+                                                <i class="fas fa-shopping-cart"></i>
+                                                <span>Thêm vào giỏ hàng</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="ltn__product-details-menu-3">
+                                    <ul>
+                                        <li class="add-to-wishlist">
+                                            <a href="#" class="" title="Wishlist" data-toggle="modal" data-target="#liton_wishlist_modal">
+                                                <input hidden asp-for="ProductId" />
+                                                <i class="far fa-heart"></i>
+                                                <span>Yêu thích</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <hr>
+                                <div class="ltn__social-media">
+                                    <ul>
+                                        <li>Chia sẻ:</li>
+                                        <li><a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a></li>
+                                        <li><a href="#" title="Twitter"><i class="fab fa-twitter"></i></a></li>
+                                        <li><a href="#" title="Instagram"><i class="fab fa-instagram"></i></a></li>
+
+                                    </ul>
+                                </div>
+                                <hr>
+                                <div class="ltn__safe-checkout">
+                                    <h5>Phương thức thanh toán</h5>
+                                    <img src="~/img/icons/payment-2.png" alt="Payment Image">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Shop Tab Start -->
+                <div class="ltn__shop-details-tab-inner ltn__shop-details-tab-inner-2">
+                    <div class="ltn__shop-details-tab-menu">
+                        <div class="nav">
+                            <a class="active show" data-toggle="tab" href="#liton_tab_details_1_1">Mô tả</a>
+                            <a data-toggle="tab" href="#liton_tab_details_1_2" class="">Đánh giá</a>
+                        </div>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane fade active show" id="liton_tab_details_1_1">
+                            <div class="ltn__shop-details-tab-content-inner">
+                                <h4 class="title-2">@Model.Title</h4>
+                                @Html.Raw(Model.Description)
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="liton_tab_details_1_2">
+                            <div class="ltn__shop-details-tab-content-inner">
+                                <h4 class="title-2">Khách hàng đánh giá</h4>
+                                @*<div class="product-ratting">
+                                    <ul>
+                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                        <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
+                                        <li class="review-total"> <a href="#"> ( 95 Đánh giá )</a></li>
+                                    </ul>
+                                </div>*@
+                                <hr>
+                                <!-- comment-area -->
+                                <div class="ltn__comment-area mb-30">
+                                    <div class="ltn__comment-inner">
+                                        <ul>
+                                            <li>
+                                                <div class="ltn__comment-item clearfix">
+                                                    <div class="ltn__commenter-img">
+                                                        <img width="100" height="100" src="~/img/testimonial/1.jpeg" alt="Image">
+                                                    </div>
+                                                    <div class="ltn__commenter-comment">
+                                                        <h6><a href="#">User</a></h6>
+                                                        <div class="product-ratting">
+                                                            <ul>
+                                                                <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                                                <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                                                <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                                                <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                                                <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                                            </ul>
+                                                        </div>
+                                                        <p>Ngon bổ rẻ!</p>
+                                                        <span class="ltn__comment-reply-btn">@DateTime.Now.ToString("dd/MM/yyyy")</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!-- comment-reply -->
+                                <div class="ltn__comment-reply-area ltn__form-box mb-30">
+                                    <form action="#">
+                                        <h4 class="title-2">Thêm đánh giá</h4>
+                                        <div class="mb-30">
+                                            <div class="add-a-review">
+                                                <h6>Đánh giá của bạn:</h6>
+                                                <div class="product-ratting">
+                                                    <ul>
+                                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                                        <li><a href="#"><i class="far fa-star"></i></a></li>
+                                                        <li><a href="#"><i class="far fa-star"></i></a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="input-item input-item-textarea ltn__custom-icon">
+                                            <textarea placeholder="Phản hồi"></textarea>
+                                        </div>
+                                        <div class="input-item input-item-name ltn__custom-icon">
+                                            <input type="text" placeholder="Tên của bạn....">
+                                        </div>
+                                        <div class="input-item input-item-email ltn__custom-icon">
+                                            <input type="email" placeholder="Email của bạn....">
+                                        </div>
+                                        <div class="btn-wrapper">
+                                            <a class="btn theme-btn-1 btn-effect-1 text-uppercase" href="#">Gửi</a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Shop Tab End -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ltn__product-slider-area ltn__product-gutter pb-70">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title-area ltn__section-title-2">
+                    <h6 class="section-title">Sản phẩm liên quan</h6>
+                </div>
+            </div>
+        </div>
+        <div class="row ltn__related-product-slider-one-active slick-arrow-1">
+            @foreach (var item in productRandom)
+            {
+                string url = $"{HostConfig.Domain}/images/product/{item.Avatar}";
+                <div class="col-lg-12">
+                    <div class="ltn__product-item ltn__product-item-3 text-center">
+                        <div class="product-img">
+                            <a asp-action="Detail" asp-controller="Product" asp-route-productId="@item.ProductId">
+                                <img width="266" height="266" src="@url" alt="#">
+                            </a>
+                            <div class="product-badge">
+                                <ul>
+                                    <li class="sale-badge">New</li>
+                                </ul>
+                            </div>
+
+                        </div>
+                        <div class="product-info">
+                            @*<div class="product-ratting">
+                                <ul>
+                                    <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                    <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                    <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                    <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                    <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
+                                </ul>
+                            </div>*@
+                            <h2 class="product-title"><a asp-action="Detail" asp-controller="Product" asp-route-productId="@item.ProductId">@item.ProductName</a></h2>
+                            <div class="product-price">
+                                <span>@item.Price.Value.ToString("#,##0") VNĐ</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        </div>
+    </div>
+</div>
+
+<div class="ltn__feature-area before-bg-bottom-2 mb--30--- plr--5">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ltn__feature-item-box-wrap ltn__border-between-column white-bg">
+                    <div class="row">
+                        <div class="col-xl-3 col-md-6 col-12">
+                            <div class="ltn__feature-item ltn__feature-item-8">
+                                <div class="ltn__feature-icon">
+                                    <img src="~/img/icons/icon-img/11.png" alt="#">
+                                </div>
+                                <div class="ltn__feature-info">
+                                    <h4>Curated Products</h4>
+                                    <p>
+                                        Provide Curated Products for
+                                        all product over $100
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 col-12">
+                            <div class="ltn__feature-item ltn__feature-item-8">
+                                <div class="ltn__feature-icon">
+                                    <img src="~/img/icons/icon-img/12.png" alt="#">
+                                </div>
+                                <div class="ltn__feature-info">
+                                    <h4>Handmade</h4>
+                                    <p>
+                                        We ensure the product quality
+                                        that is our main goal
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 col-12">
+                            <div class="ltn__feature-item ltn__feature-item-8">
+                                <div class="ltn__feature-icon">
+                                    <img src="~/img/icons/icon-img/13.png" alt="#">
+                                </div>
+                                <div class="ltn__feature-info">
+                                    <h4>Natural Food</h4>
+                                    <p>
+                                        Return product within 3 days
+                                        for any product you buy
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 col-12">
+                            <div class="ltn__feature-item ltn__feature-item-8">
+                                <div class="ltn__feature-icon">
+                                    <img src="~/img/icons/icon-img/14.png" alt="#">
+                                </div>
+                                <div class="ltn__feature-info">
+                                    <h4>Free home delivery</h4>
+                                    <p>
+                                        We ensure the product quality
+                                        that you can trust easily
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ltn__modal-area ltn__add-to-cart-modal-area">
+    <div class="modal fade" id="liton_wishlist_modal" tabindex="-1">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="ltn__quick-view-modal-inner">
+                        <div class="modal-product-item">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="modal-product-img">
+                                        <img width="125" height="125" src="@avatar" alt="#">
+                                    </div>
+                                    <div class="modal-product-info">
+                                        <h5><a href="#">@Model.ProductName</a></h5>
+                                        <p class="added-cart"><i class="fa fa-check-circle"></i> Đã thêm vào danh sách yêu thích</p>
+                                        <div class="btn-wrapper">
+                                            <a asp-action="Index" asp-controller="WishList" class="theme-btn-1 btn btn-effect-1">Danh sách yêu thích</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

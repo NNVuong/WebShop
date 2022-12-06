@@ -1,0 +1,125 @@
+﻿<!doctype html>
+<html class="no-js" lang="zxx">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>@ViewData["Title"]</title>
+    <meta name="robots" content="noindex, follow" />
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+    <!-- Place favicon.png in the root directory -->
+    <link rel="shortcut icon" href="/img/favicon.png" type="image/x-icon" />
+    <!-- Font Icons css -->
+    <link rel="stylesheet" href="~/css/font-icons.css">
+    <!-- plugins css -->
+    <link rel="stylesheet" href="~/css/plugins.css">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="~/css/style.css">
+    <!-- Responsive css -->
+    <link rel="stylesheet" href="~/css/responsive.css">
+    <link rel="stylesheet" href="~/css/search.css" />
+</head>
+
+<body>
+    <!-- Body main wrapper start -->
+    <div class="body-wrapper">
+
+        <!-- Header START -->
+        @await Html.PartialAsync("_HeaderPartialView.cshtml")
+        <!-- Header END -->
+
+        @RenderBody()
+
+        <!-- Footer START -->
+        @await Html.PartialAsync("_FooterPartialView.cshtml")
+        <!-- Footer END -->
+       
+    </div>
+    <!-- Body main wrapper end -->
+    <!-- preloader area start -->
+    <div class="preloader d-none" id="preloader">
+        <div class="preloader-inner">
+            <div class="spinner">
+                <div class="dot1"></div>
+                <div class="dot2"></div>
+            </div>
+        </div>
+    </div>
+    <!-- preloader area end -->
+    <!-- All JS Plugins -->
+    <script src="~/js/plugins.js"></script>
+    <!-- Main JS -->
+    <script src="~/js/main.js"></script>
+    <script src="~/js/CartItem.js"></script>
+    @await Component.InvokeAsync("Notyf")
+    @await RenderSectionAsync("Script", required: false)
+    @await RenderSectionAsync("Styles", required: false)
+    <script>
+
+
+        function debounce(func, wait, immediate) {
+            var timeout;
+
+            return function executedFunction() {
+                var context = this;
+                var args = arguments;
+
+                var later = function () {
+                    timeout = null;
+                    if (!immediate) func.apply(context, args);
+                };
+
+                var callNow = immediate && !timeout;
+
+                clearTimeout(timeout);
+
+                timeout = setTimeout(later, wait);
+
+                if (callNow) func.apply(context, args);
+            };
+        };
+
+
+        let search = ''
+        var loadingIcon = document.getElementsByClassName('loading')[0];
+        var clearIcon = document.getElementById('clear-input');
+        $("#search-product").keyup(debounce(function () {
+            
+            loadingIcon.style.display = 'block';
+            clearIcon.style.display = 'none';
+            search = $("#search-product").val().toLowerCase();
+            getResult(search)
+            setTimeout(() => {
+                loadingIcon.style.display = 'none';
+                clearIcon.style.display = 'block';
+            },500)
+        }, 1000));
+        
+        function getResult(search) {
+            $.ajax({
+                type: 'get',
+                url: '/Product/HomeSearch',
+                data: { keyword: search },
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $("#table-result").html(data);
+                }
+            });
+        }
+
+        var divElement = document.getElementById('popperwrapper');
+        var inputElement = document.getElementsByClassName('search-product');
+        var inputIdElement = document.getElementById('search-product');
+        
+
+        divElement.onmousedown = function (e) {
+            e.preventDefault();
+        }
+        clearIcon.onclick = function (e) {
+            inputIdElement.value = '';
+        }
+    </script>
+</body>
+</html>

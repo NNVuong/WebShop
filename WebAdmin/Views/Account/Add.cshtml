@@ -1,0 +1,69 @@
+﻿@{
+    ViewData["Title"] = "Tạo mới tài khoản quản trị";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model SharedObjects.ViewModels.AddUserViewModel
+
+
+<div class="card-body">
+    <h4>Tạo mới tài khoản quản trị</h4>
+    <div class="m-t-25" style="max-width: 700px">
+        <form asp-controller="Account" asp-action="Add" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputFullName4">Tên đăng nhập</label>
+                    <input type="text" class="form-control" asp-for="UserName" placeholder="Tên đăng nhập">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputFullName4">Họ và Tên</label>
+                    <input type="text" class="form-control" asp-for="FullName" placeholder="Họ và Tên">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputEmail4">Email</label>
+                    <input type="text" class="form-control" asp-for="Email" placeholder="Email">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputAddress4">Địa chỉ</label>
+                    <input type="text" class="form-control" asp-for="Address" placeholder="Địa chỉ">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputPhone4">Số điện thoại</label>
+                    <input type="text" class="form-control" asp-for="Phone" placeholder="Số điện thoại">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputBirthDay4">Ngày sinh</label>
+                    <input type="datetime-local" id="birthdaytime" name="birthdaytime" class="form-control" asp-for="BirthDay" placeholder="Ngày sinh">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputAvatar4">Ảnh đại diện</label>
+                    <input type="file" name="Avatar" class="form-control" asp-for="Avatar" placeholder="Ảnh đại diện">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Mật khẩu</label>
+                    <input type="password" class="form-control" asp-for="Password" placeholder="Mật khẩu">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputConfirmPassword4">Nhập lại mật khẩu</label>
+                    <input type="password" class="form-control" asp-for="ConfirmPassword" placeholder="Nhập lại mật khẩu">
+                </div>
+            </div>
+            @*<div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="inputPassword4">Quyền truy cập</label>
+                <select class="form-control" asp-for="RoleId" asp-items="@ViewBag.QuyenTruyCap" required>
+                    <option value="0" disabled selected>Chọn quyền truy cập</option>
+                </select>
+            </div>
+        </div>*@
+            <button type="submit" class="btn btn-primary">Tạo mới</button>
+        </form>
+    </div>
+
+</div>

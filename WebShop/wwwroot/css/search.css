@@ -1,0 +1,78 @@
+﻿.search-wrapper {
+    position: relative;
+}
+
+.popperwrapper {
+    position: absolute;
+    display: none;
+    flex-direction: column;
+    width: 500px;
+    max-height: min((100vh - 96px) - 60px, 300px);
+    margin-top: 2px;
+    border-radius: 8px;
+    background: rgb(255, 255, 255);
+    box-shadow: rgb(0 0 0 / 12%) 0px 2px 12px;
+    overflow-y: auto;
+    z-index: 1;
+}
+.search-product:focus ~ .popperwrapper{
+    display:flex;
+}
+
+.loading {
+    display:none;
+    position: absolute;
+    right: 22px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.loading {
+    animation: spinner 0.8s linear infinite;
+}
+
+@keyframes spinner {
+    from {
+        transform: translateY(-50%) rotate(0);
+    }
+
+    to {
+        transform: translateY(-50%) rotate(360deg);
+    }
+}
+
+.popperwrapper .list {
+    
+}
+
+.popperwrapper a {
+    display: flex;
+    padding: 10px;
+    overflow: hidden;
+}
+
+.popperwrapper a:hover {
+    cursor: pointer;
+    background-color: rgba(22, 24, 35, 0.03);
+}
+
+.popperwrapper a img {
+    margin-top: 8px;
+    margin-left: 20px;
+    width: 60px;
+    height: 60px;
+}
+
+.popperwrapper a .info {
+    margin-left: 30px;
+}
+
+.popperwrapper a .info .name {
+    margin-top: 10px;
+    display: block;
+}
+.error {
+    margin-top: 20px;
+    justify-content: center;
+    display: flex;
+}

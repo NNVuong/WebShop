@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "Thông tin tài khoản";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var role = ViewBag.role;
+    string url = $"{HostConfig.Domain}/images/account/{Model.Avatar}";
+}
+@model SharedObjects.Models.AppUser
+
+
+<div class="card-body">
+    <h4>Chi tiết thông tin tài khoản</h4>
+    <div class="m-t-25" style="max-width: 700px">
+        <form asp-controller="Account" asp-action="Detail" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="Id" value="@Model.Id" />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputFullName4">Họ và Tên</label>
+                    <input disabled type="text" class="form-control" asp-for="FullName" value="@Model.FullName">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPhone4">Số điện thoại</label>
+                    <input disabled type="text" class="form-control" asp-for="PhoneNumber" value="@Model.PhoneNumber">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputAddress4">Địa chỉ</label>
+                    <input disabled type="text" class="form-control" asp-for="Address" value="@Model.Address">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputBirthDay4">Ngày sinh</label>
+                    <input disabled type="datetime-local" id="birthdaytime" name="birthdaytime" class="form-control" asp-for="BirthDay">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Quyền truy cập</label>
+                    <input disabled type="text" class="form-control" value="@role">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputAvatar4">Ảnh đại diện</label>
+                    <img src="@url" alt="">
+                </div>
+            </div>
+            <a asp-action="Index" class="btn btn-primary">Quay lại</a>
+        </form>
+    </div>
+
+</div>

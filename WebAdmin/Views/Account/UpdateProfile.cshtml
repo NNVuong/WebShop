@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Cập nhật thông tin tài khoản";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    string url = $"{HostConfig.Domain}/images/account/{User.GetSpecificClaim("Avatar")}";
+}
+@using SharedObjects.Commons
+@model SharedObjects.ViewModels.UpdateUserViewModel
+
+
+<div class="card-body">
+    <h4>Cập nhật tài khoản quản trị</h4>
+    <div class="m-t-25" style="max-width: 700px">
+        <form asp-controller="Account" asp-action="UpdateProfile" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="UserId" value="@User.GetSpecificClaim("Id")" />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputFullName4">Họ và Tên</label>
+                    <input type="text" class="form-control" asp-for="FullName" value="@User.GetSpecificClaim("FullName")" placeholder="">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPhone4">Số điện thoại</label>
+                    <input type="text" class="form-control" asp-for="Phone" value="@User.GetSpecificClaim("PhoneNumber")" placeholder="">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputAddress4">Địa chỉ</label>
+                    <input type="text" class="form-control" asp-for="Address" value="@User.GetSpecificClaim("Address")" placeholder="">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputBirthDay4">Ngày sinh</label>
+                    <input type="datetime-local" id="birthdaytime" name="birthdaytime" class="form-control" asp-for="BirthDay">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputAvatar4">Ảnh đại diện</label>
+                    <img src="@url" alt="">
+                    <input type="file" name="Avatar" class="form-control" asp-for="Avatar">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Cập nhật</button>
+            <a asp-action="Index">Quay lại</a>
+        </form>
+    </div>
+
+</div>

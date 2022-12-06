@@ -1,0 +1,93 @@
+﻿@model PagedList.Core.IPagedList<SharedObjects.ValueObjects.VOrder>
+@{
+    int CurrentPage = ViewBag.CurrentPage;
+    ViewData["Title"] = "Danh sách đơn hàng " + CurrentPage;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
+            <span class="breadcrumb-item active">Danh sách đơn hàng : Trang @CurrentPage</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover e-commerce-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Họ và tên</th>
+                        <th>Ngày mua</th>
+                        <th>Tổng tiền</th>
+                        <th>Trạng thái</th>
+                        <th>Thanh toán</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+
+                            <tr>
+                                <td>@item.OrderId</td>
+                                <td>@item.UserName</td>
+                                <td>@item.OrderDate</td>
+                                <td>@item.TotalMoney.ToString("#,##0") VNĐ</td>
+                                <td>@item.Status</td>
+                                <td>
+                                    @if (item.Paid == true)
+                                    {
+                                        <div class="d-flex align-items-center">
+                                            <div class="badge badge-success badge-dot m-r-10"></div>
+                                            <div>Đã thanh toán</div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="d-flex align-items-center">
+                                            <div class="badge badge-danger badge-dot m-r-10"></div>
+                                            <div>Chưa thanh toán</div>
+                                        </div>
+                                    }
+                                </td>
+                                <td>
+                                    <a class="btn btn-primary btn-tone m-r-5" asp-controller="Order" asp-action="Details" asp-route-id="@item.OrderId">Chi tiết</a>
+                                    <a data-target="#modal-header" data-toggle="modal" class="btn btn-secondary btn-tone m-r-5" asp-controller="Order" asp-action="ChangeStatus" asp-route-id="@item.OrderId">Cập nhật trạng thái</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+
+            </table>
+            <div aria-label="Page navigation example">
+                <ul class="pagination">
+                    <pager class="pager-container" list="@Model"  asp-controller="Order" asp-action="Index" />
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal-header" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+@section Script {
+    <script>
+        $('#modal-header').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); 
+            var url = button.attr("href");
+            var modal = $(this);
+            modal.find('.modal-content').load(url);
+        });
+    </script>
+}

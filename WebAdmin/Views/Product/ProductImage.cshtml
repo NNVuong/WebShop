@@ -1,0 +1,117 @@
+﻿@model SharedObjects.ViewModels.ProductImageViewModel;
+@{
+    ViewData["Title"] = "Trang quản lý hình ảnh sản phẩm";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var images = ViewBag.images as List<SharedObjects.ValueObjects.VProductImage>;
+    var product = ViewBag.product as SharedObjects.ValueObjects.VProduct;
+}
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
+            <a asp-controller="Product" asp-action="Index" class="breadcrumb-item">Danh sách sản phẩm</a>
+            <span class="breadcrumb-item active">Danh sách hình ảnh sản phẩm</span>
+        </nav>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form asp-controller="Product" asp-action="AddImage" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input hidden asp-for="ProductId"/>
+            <div class="page-header no-gutters has-tab">
+                <div class="d-md-flex m-b-15 align-items-center justify-content-between">
+                    <div class="m-b-15">
+                        <button class="btn btn-primary">
+                            <i class="anticon anticon-plus-circle"></i>
+                            <span>Upload hình ảnh</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="m-b-15">
+                        <input name="ImageName" type="file" class="form-control-file" asp-for="ImageName" multiple />
+                        <span asp-validation-for="ImageName" class="text-danger"></span>
+                    </div>
+                </div>
+
+            </div>
+            
+        </form>
+
+
+
+        <div class="table-responsive">
+            <table class="table table-hover e-commerce-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên hình ảnh</th>
+                        <th>Hình ảnh</th>
+                        <th>#</th>
+                    </tr>
+                </thead>
+                <tbody id="records_table">
+                    @if (images != null)
+                    {
+                        foreach (var item in images)
+                        {
+                            string url = $"{HostConfig.Domain}/images/product/{item.ImageName}";
+                            <tr>
+                                <td>@item.Id</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img class="img-fluid rounded" src="assets/images/others/thumb-9.jpg" style="max-width: 60px" alt="">
+                                        <h6 class="m-b-0 m-l-10">@item.ImageName</h6>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img class="img-fluid rounded" src="@url" style="max-width: 60px" alt="">
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <a class="btn btn-success btn-tone m-r-5 delete" data-id="@item.Id">Xóa</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+@section Script{
+<script>
+    $('body').off('click', '.delete').on('click', '.delete', ConfirmDelete);
+    function ConfirmDelete() {
+        var tranferId = $(this).data('id');
+        bootbox.confirm("Bạn chắc chắn muốn xóa", function (result) {
+            if (result) {
+                Delete(tranferId)
+            }
+        })
+    }
+    function Delete(transferId) {
+        $.ajax({
+            type: 'post',
+            url: '/Product/DeleteImage',
+            dataType: 'json',
+            data: { imageId: transferId },
+            success: function (response) {
+
+                if (response.statusCode == 200) {
+                    bootbox.alert("Xóa thành công", function () {
+                        location.reload()
+                    })
+                } else {
+                    bootbox.alert("Xảy ra lỗi")
+                }
+            }
+        })
+    }
+</script>
+}

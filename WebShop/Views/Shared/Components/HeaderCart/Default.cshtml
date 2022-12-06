@@ -1,0 +1,58 @@
+﻿@model List<SharedObjects.ViewModels.CartItem>;
+@section Script{
+    
+}
+@if (Model != null && Model.Count() > 0)
+{
+    <div class="ltn__utilize-menu-inner ltn__scrollbar">
+        <div class="ltn__utilize-menu-head">
+            <span class="ltn__utilize-menu-title">Giỏ hàng</span>
+            <button class="ltn__utilize-close">×</button>
+        </div>
+        <div class="mini-cart-product-area ltn__scrollbar">
+            @foreach (var item in Model)
+            {
+                string url = $"{HostConfig.Domain}/images/product/{item.product.Avatar}";
+                <div class="mini-cart-item clearfix">
+                    <div class="mini-cart-img">
+                        <a asp-action="Detail" asp-controller="Product" asp-route-productId="@item.product.ProductId"><img src="@url" alt="@item.product.ProductName"></a>
+                        <span class="mini-cart-item-delete removecart" data-mahh="@item.product.ProductId"><i class="icon-cancel"></i></span>
+                    </div>
+                    <div class="mini-cart-info">
+                        <h6><a asp-action="Detail" asp-controller="Product" asp-route-productId="@item.product.ProductId">@item.product.ProductName</a></h6>
+                        <span class="mini-cart-quantity">@item.amount x @item.product.Price.Value.ToString("#,##0") VNĐ</span>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="mini-cart-footer">
+            <div class="mini-cart-sub-total">
+                <h5>Tổng số tiền: <span>@Model.Sum(x => x.TotalMoney).ToString("#,##0") VNĐ</span></h5>
+            </div>
+            <div class="btn-wrapper">
+                <a asp-controller="ShoppingCart" asp-action="Index" class="theme-btn-1 btn btn-effect-1">Chi tiết</a>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a href="/checkout.html" class="theme-btn-2 btn btn-effect-2">Thanh toán</a>
+                }
+                else
+                {
+                    <a href="/dang-nhap.html?returnUrl=/checkout.html" class="theme-btn-2 btn btn-effect-2">Thanh toán</a>
+                }
+            </div>
+            <p>Miễn phí vẫn chuyển đơn hàng trên 100k!</p>
+        </div>
+    </div>
+}
+else
+{
+    <div class="ltn__utilize-menu-head">
+        <span class="ltn__utilize-menu-title">Giỏ hàng</span>
+        <button class="ltn__utilize-close">×</button>
+    </div>
+    <div class="mini-cart-product-area ltn__scrollbar">
+        <div class="mini-cart-item clearfix">
+            <h6>Giỏ hàng rỗng</h6>
+        </div>
+    </div>
+}

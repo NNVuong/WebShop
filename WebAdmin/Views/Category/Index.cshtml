@@ -1,0 +1,155 @@
+﻿@model List<SharedObjects.ValueObjects.VCategory>
+@{
+    ViewData["Title"] = "Danh sách danh mục sản phẩm ";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
+            <span class="breadcrumb-item active">Danh sách danh mục</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row m-b-30">
+            <div class="col-lg-8">
+                <a class="btn btn-primary"  asp-controller="Category" asp-action="Add"><i class="anticon anticon-plus-circle m-r-5"></i><span>Thêm danh mục</span></a>
+            </div>
+            <div class="col-lg-4 text-right">
+
+            </div>
+        </div>
+        <div class="row m-b-30">
+            <div class="col-lg-12">
+                <div class="d-md-flex">
+                    <div class="m-b-10 m-r-15">
+                        <div class="input-affix m-v-10">
+                            <i class="prefix-icon anticon anticon-search opacity-04"></i>
+                            <input id="search" name="search" type="text" class="form-control" placeholder="Tìm kiếm sản phẩm">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover e-commerce-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên danh mục</th>
+                        <th>Hình ảnh</th>
+                        <th>Trạng thái</th>
+                        <th>#</th>
+                    </tr>
+                </thead>
+                <tbody id="records_table">
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            string url = $"{HostConfig.Domain}/images/category/{item.Thumb}";
+                            <tr>
+                                <td>@item.CatId</td>
+                                <td>
+                                    <a href="#">@item.CatName</a>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img class="img-fluid rounded" src="@url" style="max-width: 60px" alt="">
+                                    </div>
+                                </td>
+                                <td>
+                                    @if (item.Published == true)
+                                    {
+
+
+                                        <div class="d-flex align-items-center">
+                                            <div class="badge badge-success badge-dot m-r-10"></div>
+                                            <div>Public</div>
+                                        </div> }
+                                    else
+                                    {
+                                        <div class="d-flex align-items-center">
+                                            <div class="badge badge-success badge-dot m-r-10"></div>
+                                            <div>Non-Public</div>
+                                        </div>
+                                    }
+                                </td>
+                                <td>
+                                    <a class="btn btn-secondary btn-tone m-r-5" asp-controller="Category" asp-action="Update" asp-route-catId="@item.CatId">Sửa</a>
+                                    <a class="btn btn-success btn-tone m-r-5 delete" data-id="@item.CatId">Xóa</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+@section Script{
+    <script>
+        $(document).ready(function () {
+            $("#search").keyup(delay(function () {
+                var strkeyword = $("#search").val().toLowerCase();
+                $.ajax({
+                    url: "/Category/FindCategory/",
+                    data: {
+                        Search: strkeyword
+                    },
+                    type: "POST",
+                    async: true,
+                    success: function (data) {
+                        $("#records_table").html("");
+                        $("#records_table").html(data);
+                    }
+                });
+            }, 200));
+        });
+        function delay(callback, ms) {
+            var timer = 0;
+            return function () {
+                var context = this, args = arguments;
+                clearTimeout(timer);
+                timer = setTimeout(function () {
+                    callback.apply(context, args);
+                }, ms || 0);
+            };
+        }
+
+        
+        $('body').off('click', '.delete').on('click', '.delete', ConfirmDelete);
+        function ConfirmDelete() {
+            var tranferId = $(this).data('id');
+            bootbox.confirm("Bạn chắc chắn muốn xóa", function (result) {
+                if (result) {
+                    Delete(tranferId)
+                }
+            })
+        }
+        function Delete(transferId) {
+            $.ajax({
+                type: 'post',
+                url: '/Category/Delete',
+                dataType: 'json',
+                data: { catId: transferId },
+                success: function (response) {
+
+                    if (response.statusCode == 200) {
+                        bootbox.alert("Xóa thành công", function () {
+                            location.reload()
+                        })
+                    } else {
+                        bootbox.alert("Xảy ra lỗi")
+                    }
+                }
+            })
+        }
+    </script>
+}

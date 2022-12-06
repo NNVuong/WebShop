@@ -1,0 +1,109 @@
+﻿@model List<SharedObjects.ViewModels.CartItem>;
+@{
+    ViewData["Title"] = "Xem giỏ hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var returnUrl = Context.Request.Query["ReturnUrl"];
+}
+@section Script{
+    <script src="~/js/CartItem.js"></script>
+}
+<div class="ltn__breadcrumb-area ltn__breadcrumb-area-2 ltn__breadcrumb-color-white bg-overlay-theme-black-90 bg-image" data-bg="/img/bg/9.jpeg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ltn__breadcrumb-inner ltn__breadcrumb-inner-2 justify-content-between">
+                    <div class="section-title-area ltn__section-title-2">
+                        <h6 class="section-subtitle ltn__secondary-color">//  Welcome to our company</h6>
+                        <h1 class="section-title white-color">Giỏ hàng</h1>
+                    </div>
+                    <div class="ltn__breadcrumb-list">
+                        <ul>
+                            <li><a href="index.html">Trang chủ</a></li>
+                            <li>Giỏ hàng</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="liton__shoping-cart-area mb-120">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                @if (Model != null && Model.Count() > 0)
+                {
+                    <div class="shoping-cart-inner">
+                        <div class="shoping-cart-table table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="cart-product-remove">Xóa</th>
+                                        <th class="cart-product-image">Ảnh đại diện</th>
+                                        <th class="cart-product-info">Sản phẩm</th>
+                                        <th class="cart-product-price">Đơn giá</th>
+                                        <th class="cart-product-quantity">Số lượng</th>
+                                        <th class="cart-product-subtotal">Thành tiền</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @if (Model != null && Model.Count() > 0)
+                                    {
+                                        foreach (var item in Model)
+                                        {
+                                            string url = $"{HostConfig.Domain}/images/product/{item.product.Avatar}";
+                                            <tr>
+                                                <td class="cart-product-remove removecart" data-mahh="@item.product.ProductId">x</td>
+                                                <td class="cart-product-image">
+                                                    <a asp-action="Detail" asp-controller="Product" asp-route-productId="@item.product.ProductId"><img src="@url" alt="#"></a>
+                                                </td>
+                                                <td class="cart-product-info">
+                                                    <h4><a asp-action="Detail" asp-controller="Product" asp-route-productId="@item.product.ProductId">@item.product.ProductName</a></h4>
+                                                </td>
+                                                <td class="cart-product-price">@item.product.Price.Value.ToString("#,##0") VNĐ</td>
+                                                <td class="cart-product-quantity">
+                                                    <div>
+                                                        <input data-mahh="@item.product.ProductId" type="number" value="@item.amount" min="1" name="qtybutton" class="cart-plus-minus-box cartItem">
+                                                    </div>
+                                                </td>
+                                                <td class="cart-product-subtotal">@item.TotalMoney.ToString("#,##0") VNĐ</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="shoping-cart-total mt-50">
+                            <h4>Tổng đơn hàng</h4>
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Thành tiền</strong></td>
+                                        <td><strong>@Model.Sum(x => x.TotalMoney).ToString("#,##0") VNĐ</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="btn-wrapper text-right">
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <a href="checkout.html" class="theme-btn-1 btn btn-effect-1">Thanh toán</a>
+                                }
+                                else
+                                {
+                                    <a href="/dang-nhap.html?returnUrl=/checkout.html" class="theme-btn-1 btn btn-effect-1">Thanh toán</a>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <p>Chưa có hàng hóa trong giỏ hàng.Tích cực mua sắm đi nào</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>

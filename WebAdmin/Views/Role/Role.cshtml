@@ -1,0 +1,87 @@
+﻿@model List<SharedObjects.Models.AppRole>
+@{
+    ViewData["Title"] = "Tạo mới quyền truy cập";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@section Script{
+    <script src="~/js/Role.js"></script>
+}
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
+            <span class="breadcrumb-item active">Danh sách quyền truy cập</span>
+        </nav>
+    </div>
+</div>
+
+<div class="row m-b-30">
+    <div class="col-lg-8">
+        <a class="btn btn-primary" data-toggle="modal" id="btn-add" data-target="#modal-add" ><i class="anticon anticon-plus-circle m-r-5"></i><span>Thêm mới</span></a>
+    </div>
+    <div class="col-lg-4 ">
+
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Tên quyền</th>
+                <th scope="col">Mô tả</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <th scope="row">@item.Name</th>
+                        <td>@item.Description</td>
+                        <td>
+                            <a class="btn btn-secondary btn-tone m-r-5 update" data-toggle="modal" data-target="#modal-add" data-id="@item.Id">Sửa</a>
+                            <a class="btn btn-primary btn-tone m-r-5" href=@Url.Action("ManageRole","Role",new {roleName = item.Name })> <span class="glyphicon glyphicon-edit">Phân quyền</span></a>
+                            <a class="btn btn-success btn-tone m-r-5 delete" data-id="@item.Id">Xóa</a>
+
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+</div>
+<!--Modal add, update-->
+<div class="modal-area">
+
+    <div class="modal fade" id="modal-add" tabindex="-1" role="columnheader" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">Thêm mới, cập nhật quyền </h4>
+                    <p hidden id="hid-id"></p>
+                </div>
+                <form class="modal-body" id="frm-save">
+
+                    <div class="form-group">
+                        <label for="txt-RoleName">Tên quyền</label>
+                        <input type="text" class="form-control" id="txt-RoleName" name="CourseName" style="color:mediumvioletred">
+                    </div>
+                    <div class="form-group">
+                        <label for="txt-RoleName">Mô tả</label>
+                        <input type="text" class="form-control" id="txt-Description" name="CourseName" style="color:mediumvioletred">
+                    </div>
+
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn default" data-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn blue" id="btn-save">Cập nhật</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Kết thúc Modal thêm, update-->
+
+</div>

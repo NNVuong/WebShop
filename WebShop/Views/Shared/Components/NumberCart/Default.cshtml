@@ -1,0 +1,25 @@
+﻿@model List<SharedObjects.ViewModels.CartItem>;
+@if (Model != null && Model.Count() > 0)
+{
+    <div class="mini-cart-icon mini-cart-icon-2">
+        <a href="#ltn__utilize-cart-menu" class="ltn__utilize-toggle">
+            <span class="mini-cart-icon">
+                <i class="icon-shopping-cart"></i>
+                <sup>@Model.Count()</sup>
+            </span>
+            <h6><span>Giỏ hàng</span> <span>@Model.Sum(x => x.TotalMoney).ToString("#,##0") VNĐ</span></h6>
+        </a>
+    </div>
+}
+else
+{
+    <div class="mini-cart-icon mini-cart-icon-2">
+        <a href="#ltn__utilize-cart-menu" class="ltn__utilize-toggle">
+            <span class="mini-cart-icon">
+                <i class="icon-shopping-cart"></i>
+                <sup>0</sup>
+            </span>
+            <h6><span>Giỏ hàng</span> <span>0 VNĐ</span></h6>
+        </a>
+    </div>
+}

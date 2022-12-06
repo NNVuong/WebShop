@@ -1,0 +1,18 @@
+﻿@model List<SharedObjects.Models.Product>
+@if (Model.Count() > 0)
+{
+    foreach (var item in Model)
+    {
+        string url = $"{HostConfig.Domain}/images/product/{item.Avatar}";
+        <a asp-action="Detail" asp-controller="Product" asp-route-productId="@item.ProductId">
+            <img src="@url" alt="">
+            <span class="info">
+                <h6 class="name">@item.ProductName</h6>
+                <span class="price">@item.Price.Value.ToString("#,##0") VNĐ</span>
+            </span>
+        </a>
+    }
+}
+else {
+    <h6 class="error">Không tìm thấy kết quả</h6>
+}

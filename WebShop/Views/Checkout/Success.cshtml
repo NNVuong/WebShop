@@ -1,0 +1,55 @@
+﻿@model SharedObjects.ViewModels.MuaHangSuccessVM
+@{
+    ViewData["Title"] = "Mua hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="ltn__breadcrumb-area ltn__breadcrumb-area-2 ltn__breadcrumb-color-white bg-overlay-theme-black-90 bg-image" data-bg="/img/bg/9.jpeg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ltn__breadcrumb-inner ltn__breadcrumb-inner-2 justify-content-between">
+                    <div class="section-title-area ltn__section-title-2">
+                        <h6 class="section-subtitle ltn__secondary-color">//  Welcome to our company</h6>
+                        <h1 class="section-title white-color">Checkout</h1>
+                    </div>
+                    <div class="ltn__breadcrumb-list">
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li>Checkout</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="checkout-area section-space-y-axis-100">
+    <div class="container">
+        <form>
+
+            <div class="row">
+                <div class="col-lg-6 col-12">
+
+                    <div class="checkbox-form">
+                        <h3 style="border-bottom: 1px solid #dee2e6">Đặt hàng thành công</h3>
+                        <p>Mã đơn hàng: #@Model.OrderId</p>
+                        <p>Cảm ơn bạn đã đặt hàng</p>
+                        <br />
+                        <h3 style="border-bottom: 1px solid #dee2e6">THÔNG TIN ĐƠN HÀNG</h3>
+                        <p>Thông tin giao hàng</p>
+                        <p>Người nhận hàng: @Model.FullName</p>
+                        <p>Số điện thoại: @Model.Phone</p>
+                        <p>Địa chỉ: @Model.Address</p>
+                        <br />
+                        Để xem chi tiết đơn hàng vui lòng truy cập vào <a asp-controller="Account" asp-action="Index"><strong>Tài khoản cá nhân.</strong></a> Cần hỗ trợ? Liên hệ với chúng tôi qua số điện thoại 0963102916
+                    </div>
+                </div>
+                <div class="col-lg-6 col-12">
+                    <img src="~/img/thanh-cong.jpeg" />
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
