@@ -40,14 +40,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Product\" />
-    <Folder Include="Views\Account\" />
     <Folder Include="Views\ShoppingCart\" />
     <Folder Include="Controllers\Components\" />
     <Folder Include="Views\Shared\Components\" />
     <Folder Include="Views\Shared\Components\HeaderCart\" />
     <Folder Include="Views\Shared\Components\NumberCart\" />
     <Folder Include="Views\Checkout\" />
-    <Folder Include="Views\DonHang\" />
     <Folder Include="Views\New\" />
     <Folder Include="Views\WishList\" />
   </ItemGroup>

@@ -16,8 +16,13 @@ namespace Service.Interfaces
         Task<ResponseResult> Register(RegisterViewModel model);
         Task<ResponseResult> Login(LoginViewModel model);
         Task<ResponseResult> ChangePassword(ChangePasswordViewModel model, string token);
+
+        Task<ResponseResult> ResetPassword(ResetPasswordViewModel model);
+
+
         Task<ResponseResult> UpdateProfile(UpdateUserViewModel model, string token);
         Task<ResponseResult> Delete(string userId, string token);
+
         Task<List<AppUser>> GetAll(string token);
         Task<AppUser> GetById(string userId, string token);
         Task<string> GetUserRole(string userId, string token);

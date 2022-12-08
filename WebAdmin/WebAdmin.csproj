@@ -38,11 +38,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\Account\" />
     <Folder Include="Views\Role\" />
     <Folder Include="Views\Category\" />
     <Folder Include="Views\Product\" />
-    <Folder Include="Views\Order\" />
     <Folder Include="Views\New\" />
   </ItemGroup>
   <ItemGroup>

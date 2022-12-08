@@ -69,6 +69,7 @@
                                                                 <th>Ngày ship hàng</th>
                                                                 <th>Trạng thái</th>
                                                                 <th>Chi tiết</th>
+                                                                <th>#</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -79,7 +80,23 @@
                                                                     <td>@item.OrderDate</td>
                                                                     <td>@item.ShipDate</td>
                                                                     <td>@item.Status</td>
-                                                                    <td><a data-target="#modal-header" data-toggle="modal" asp-controller="DonHang" asp-action="Details" asp-route-orderId="@item.OrderId">Xem đơn hàng</a></td>
+                                                                    <td>
+                                                                        <a data-target="#modal-header" data-toggle="modal" asp-controller="DonHang" asp-action="Details" asp-route-orderId="@item.OrderId">
+                                                                            Xem đơn hàng
+                                                                        </a>
+                                                                    </td>
+                                                                    <td>
+                                                                        @if (item.TransactStatusId == 1)
+                                                                        {
+                                                                            <a class="text-danger" data-target="#modal-header-cancle" data-toggle="modal" asp-controller="DonHang" asp-action="CancleStatus" asp-route-orderId="@item.OrderId">
+                                                                                Hủy
+                                                                            </a>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <a class="text-danger"><b>Đã hủy</b></a>
+                                                                        }
+                                                                    </td>
                                                                 </tr>
                                                             }
                                                         </tbody>
@@ -111,19 +128,35 @@
         </div>
     </div>
 </div>
+
 <div id="modal-header" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
+        </div>
+    </div>
+</div>
 
+<div id="modal-header-cancle" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
         </div>
     </div>
 </div>
 
 @section Script{
-    <script>$('#modal-header').on('show.bs.modal', function (event) {
+    <script>
+        $('#modal-header').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget);
             var url = button.attr("href");
             var modal = $(this);
             modal.find('.modal-content').load(url);
-        });</script>
+        });
+
+        $('#modal-header-cancle').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var url = button.attr("href");
+            var modal = $(this);
+            modal.find('.modal-content').load(url);
+        });
+    </script>
 }

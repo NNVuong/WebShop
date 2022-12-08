@@ -2,12 +2,14 @@
     $(function () {
         $(".add-to-wishlist").click(function () {
             var productid = $('#ProductId').val();
+
             $.ajax({
                 url: '/api/wishlist/add',
                 type: "POST",
                 dataType: "JSON",
                 data: {
                     productID: productid,
+
                 },
                 success: function (response) {
                     if (response.result == 'Redirect') {
@@ -37,7 +39,7 @@
                     }
                 },
                 error: function (rs) {
-                    alert("Remove Cart Error !")
+                    alert("Remove Cart Error !");
                 }
             });
         });

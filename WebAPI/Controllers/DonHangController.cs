@@ -97,6 +97,7 @@ namespace WebAPI.Controllers
             var result = await context.Set<VTransactStatus>().FromSqlRaw(OrderSP.SP_Get_TransacStatus).AsNoTracking().ToListAsync();
             return result;
         }
+
         [HttpPut("update-transactStatus/{id}")]
         public async Task<IActionResult> UpdateStatus(int id, VOrder model)
         {
@@ -109,8 +110,9 @@ namespace WebAPI.Controllers
                 {
                     donhang.PaymentDate = DateTime.Now;
                 }
-                if (donhang.TransactStatusId == 5) donhang.Deleted = true;
-                if (donhang.TransactStatusId == 3 || donhang.TransactStatusId == 4) donhang.ShipDate = DateTime.Now;
+                if (donhang.TransactStatusId == 4) donhang.Deleted = true;
+                else donhang.Deleted = false;
+                if (donhang.TransactStatusId == 2 || donhang.TransactStatusId == 3) donhang.ShipDate = DateTime.Now;
                 context.Update(donhang);
                 await context.SaveChangesAsync();
                 return Ok(new ResponseResult(200));
@@ -120,5 +122,7 @@ namespace WebAPI.Controllers
                 return BadRequest(new ResponseResult(400));
             }
         }
+
+        
     }
 }

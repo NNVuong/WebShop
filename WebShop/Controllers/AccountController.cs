@@ -123,7 +123,8 @@ namespace WebShop.Controllers
                 return View(model);
             }
         }
-        
+
+
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
@@ -156,6 +157,14 @@ namespace WebShop.Controllers
                     return RedirectToAction("Index", "Account");
                 }
             }
+        }
+
+        public IActionResult ForgetPassword()
+        {
+            string token = User.GetSpecificClaim("token");
+            //ViewBag.UserId = UserId;
+            ViewBag.Token = token;
+            return View();
         }
 
         private ClaimsPrincipal ValidateToken(string token)

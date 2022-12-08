@@ -15,7 +15,7 @@ using SharedObjects.ViewModels;
 
 namespace WebAdmin.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin,Editor")]
     public class NewController : Controller
     {
         private readonly INotyfService notyfService;

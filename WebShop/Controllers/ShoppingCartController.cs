@@ -1,7 +1,8 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;
@@ -42,8 +43,7 @@ namespace WebShop.Controllers
                 CartItem item = cart.SingleOrDefault(p => p.product.ProductId == productID);
                 if (item != null) // da co => cap nhat so luong
                 {
-                    item.amount = item.amount + amount.Value;
-                    //luu lai session
+                    item.amount = item.amount + amount.Value;                    //luu lai session
                     HttpContext.Session.Set<List<CartItem>>("GioHang", cart);
                 }
                 else

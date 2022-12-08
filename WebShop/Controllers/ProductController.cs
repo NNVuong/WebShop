@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;
 using SharedObjects.ViewModels;
@@ -16,12 +17,14 @@ namespace WebShop.Controllers
         private readonly IProductService productService;
         private readonly ICategoryService categoryService;
         private readonly IProductImageService productImage;
+        private readonly INotyfService notyfService;
 
-        public ProductController(IProductService productService, ICategoryService categoryService, IProductImageService productImage)
+        public ProductController(IProductService productService, ICategoryService categoryService, IProductImageService productImage, INotyfService notyfService)
         {
             this.productService = productService;
             this.categoryService = categoryService;
             this.productImage = productImage;
+            this.notyfService = notyfService;
         }
 
         public async Task<IActionResult> Index()

@@ -1,0 +1,21 @@
+﻿@model SharedObjects.ValueObjects.VOrder
+@{
+    var status = ViewBag.Status as List<SharedObjects.ValueObjects.VTransactStatus>;
+}
+<div class="modal-body">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title text-danger">XÁC NHẬN HỦY ĐƠN HÀNG #@Model.OrderId</h4>
+
+            <form asp-controller="DonHang" asp-action="CancleStatus" asp-route-id="@Model.OrderId" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="OrderId" />
+                <input type="hidden" asp-for="Paid" />
+                <input type="hidden" asp-for="TransactStatusId" />
+                <button type="submit" class="btn btn-danger">Xác nhận hủy đơn hàng</button>
+            </form>
+
+
+        </div>
+    </div>
+</div>

@@ -10,7 +10,8 @@ using WebAdmin.Models;
 
 namespace WebAdmin.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin,Editor")]
+
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -22,6 +23,7 @@ namespace WebAdmin.Controllers
 
         public IActionResult Index()
         {
+
             return View();
         }
 
@@ -29,11 +31,14 @@ namespace WebAdmin.Controllers
         {
             return View();
         }
+
+        [AllowAnonymous]
         public IActionResult AccessDenied()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

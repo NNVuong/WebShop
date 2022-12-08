@@ -13,7 +13,7 @@ using SharedObjects.ValueObjects;
 
 namespace WebAdmin.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin,Editor")]
     public class OrderController : Controller
     {
         private readonly IOrderService orderService;
@@ -53,6 +53,7 @@ namespace WebAdmin.Controllers
             ViewBag.Status = status;
             return PartialView("ChangeStatus", order);
         }
+
         [HttpPost]
         public async Task<IActionResult> ChangeStatus(int id, VOrder model)
         {
@@ -66,6 +67,55 @@ namespace WebAdmin.Controllers
             {
                 ModelState.AddModelError(string.Empty, result.Message);
                 return View(model);
+            }
+        }
+
+        public async Task<IActionResult> PayStatus(int id)
+        {
+            var order = await orderService.GetOrderById(id);
+            order.Paid = true;
+            return PartialView("PayStatus", order);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PayStatus(int id, VOrder model)
+        {
+            
+            var result = await orderService.UpdateStatus(id, model);
+            if (result.StatusCode == 200)
+            {
+                notyfService.Success("Cập nhật thành công!");
+                return RedirectToAction("Index", "Order");
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, result.Message);
+                return View(model);
+            }
+        }
+
+        public async Task<IActionResult> NextStatus(int id)
+        {
+            var order = await orderService.GetOrderById(id);
+            var status = await orderService.GetTransactStatus();
+            ViewBag.Status = status;
+            order.TransactStatusId++;
+            return PartialView("NextStatus", order);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> NextStatus(int id, VOrder model)
+        {
+            var result = await orderService.UpdateStatus(id, model);
+            if (result.StatusCode == 200)
+            {
+                notyfService.Success("Cập nhật thành công!");
+                return RedirectToAction("Index", "Order");
+            }
+            else
+            {
+                notyfService.Error("Không thể hủy đơn hàng");
+                return RedirectToAction("Index", "Order");
             }
         }
     }

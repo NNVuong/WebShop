@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Service.Interfaces;
 using SharedObjects.Commons;
 using SharedObjects.Models;
@@ -88,6 +89,7 @@ namespace Service.Implementations
             return responseResult;
         }
 
+
         public async Task<List<AppUser>> GetAll(string token)
         {
             httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
@@ -167,6 +169,29 @@ namespace Service.Implementations
             }
             return responseResult;
         }
+
+        public async Task<ResponseResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + model.token);
+            ResponseResult responseResult = new ResponseResult();
+
+            var requestContent = new MultipartFormDataContent();
+            
+            requestContent.Add(new StringContent(model.UserId.ToString()), "UserId");
+            requestContent.Add(new StringContent(model.Password.ToString()), "Password");
+            requestContent.Add(new StringContent(model.ConfirmPassword.ToString()), "ConfirmPassword");
+            requestContent.Add(new StringContent(model.token.ToString()), "token");
+            requestContent.Add(new StringContent(model.ByPass.ToString()), "ByPass");
+
+            using (var response = await httpClient.PutAsync("api/account/ResetPassword", requestContent))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                responseResult = JsonConvert.DeserializeObject<ResponseResult>(apiResponse);
+            }
+            return responseResult;
+        }
+
+
         public async Task<string> GetUserRole(string userId, string token)
         {
             httpClient.DefaultRequestHeaders.Clear();
@@ -175,5 +200,7 @@ namespace Service.Implementations
             string apiResponse = await response.Content.ReadAsStringAsync();
             return apiResponse;
         }
+
+        
     }
 }

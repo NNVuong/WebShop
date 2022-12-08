@@ -13,7 +13,7 @@ using SharedObjects.ViewModels;
 
 namespace WebAdmin.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin,Editor")]
     public class ProductController : Controller
     {
         private readonly INotyfService notyfService;
@@ -103,6 +103,7 @@ namespace WebAdmin.Controllers
                 }
             }
         }
+
         [HttpPost]
         public async Task<IActionResult> Delete(int productId)
         {

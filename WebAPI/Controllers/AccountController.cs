@@ -12,10 +12,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
+using Newtonsoft.Json.Linq;
 using SharedObjects.Commons;
 using SharedObjects.Models;
 using SharedObjects.ViewModels;
 using WebAPI.Helper;
+
 
 namespace WebAPI.Controllers
 {
@@ -37,7 +40,7 @@ namespace WebAPI.Controllers
         }
         [HttpPost("add")]
         [Consumes("multipart/form-data")]
-        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Add([FromForm] AddUserViewModel model)
         {
             var checkEmailAndUser = await userManager.FindByEmailAsync(model.Email);
@@ -63,7 +66,7 @@ namespace WebAPI.Controllers
                 string extension = Path.GetExtension(model.Avatar.FileName);
                 string imageName = model.UserName + extension;
                 user.Avatar = await utilities.FileUpLoad(model.Avatar, @"account", imageName.ToLower());
-                
+
             }
             if (model.Avatar == null) user.Avatar = "default.jpg";
 
@@ -78,13 +81,14 @@ namespace WebAPI.Controllers
                 return BadRequest(new ResponseResult(400, "Có lỗi xảy ra"));
             }
         }
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginViewModel model)
         {
             var result = await signInManager.PasswordSignInAsync(
                     model.UserNameOrEmail,
                     model.Password,
-                    model.RememberMe,
+                    model.RememberMe, 
                     false
                 );
             if (!result.Succeeded)
@@ -126,7 +130,7 @@ namespace WebAPI.Controllers
                     };
                         var claimIdentity = new ClaimsIdentity(claims);
 
-                        
+
 
                         var claimRoles = new List<Claim>();
                         foreach (var item in roles)
@@ -189,7 +193,7 @@ namespace WebAPI.Controllers
                     };
                         var claimIdentity = new ClaimsIdentity(claims);
 
-                        
+
 
                         var claimRoles = new List<Claim>();
                         foreach (var item in roles)
@@ -239,7 +243,8 @@ namespace WebAPI.Controllers
                 }
             }
         }
-        
+
+
         [HttpPut("update-profile")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> UpdateProfile([FromForm] UpdateUserViewModel model)
@@ -280,7 +285,7 @@ namespace WebAPI.Controllers
             }
             return BadRequest(new ResponseResult(400));
         }
-        
+
         [HttpDelete("delete/{userId}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [Authorize(Roles = "Admin")]
@@ -303,6 +308,50 @@ namespace WebAPI.Controllers
                     return BadRequest(new ResponseResult(400));
                 }
             }
+        }
+
+       
+
+        [HttpPut("ResetPassword")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> ResetPassword([FromForm] ResetPasswordViewModel model)
+        {
+            var user = await userManager.FindByIdAsync(model.UserId);
+            if (user == null)
+            {
+                return NotFound(new ResponseResult(404));
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var resultRemove = await userManager.RemovePasswordAsync(user);
+
+
+                    if (resultRemove.Succeeded)
+                    {
+                        var resultAdd = await userManager.AddPasswordAsync(user, model.Password);
+
+                        if (resultAdd.Succeeded)
+                        {
+                            return Ok(new ResponseResult(200));
+                        }
+                        else
+                        {
+                            return BadRequest(new ResponseResult(300));
+                        }
+                    }
+                    else
+                    {
+                        return BadRequest(new ResponseResult(300));
+                    }
+                }
+                catch
+                {
+                    return BadRequest(new ResponseResult(300));
+                }
+            }
+            return BadRequest(new ResponseResult(300));
         }
 
         [HttpGet("get-all")]

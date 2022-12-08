@@ -19,11 +19,16 @@ using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using PagedList.Core;
 using SharedObjects.Models;
+using Newtonsoft.Json.Linq;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebAdmin.Controllers
 {
+    [Authorize(Roles = "Admin, Editor")]
+
     public class AccountController : Controller
     {
         private readonly IConfiguration configuration;
@@ -38,6 +43,8 @@ namespace WebAdmin.Controllers
             this.notyfService = notyfService;
             this.roleService = roleService;
         }
+
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index(int? page)
         {
             string token = User.GetSpecificClaim("token");
@@ -50,16 +57,19 @@ namespace WebAdmin.Controllers
             return View(models);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Add()
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [Consumes("multipart/form-data")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Add([FromForm]AddUserViewModel model)
+        public async Task<IActionResult> Add([FromForm] AddUserViewModel model)
         {
+
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -67,7 +77,7 @@ namespace WebAdmin.Controllers
             else
             {
                 string token = User.GetSpecificClaim("token");
-                var result = await accountService.Add(model,token);
+                var result = await accountService.Add(model, token);
                 if (result.StatusCode == 200)
                 {
                     notyfService.Success("Thêm mới thành công!");
@@ -80,10 +90,13 @@ namespace WebAdmin.Controllers
                 }
             }
         }
+
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
         }
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
@@ -110,40 +123,24 @@ namespace WebAdmin.Controllers
                 return View(model);
             }
         }
+
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(string userId)
         {
-            if (userId == null)
-            {
-                return NotFound();
-            }
             string token = User.GetSpecificClaim("token");
-            var user = await accountService.GetById(userId, token);
-            return View(user);
-        }
 
-        [HttpPost, ActionName("Delete")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> DeleteConfirm(string userId)
-        {
-            string token = User.GetSpecificClaim("token");
             var result = await accountService.Delete(userId, token);
-            if (result.StatusCode == 200)
-            {
-                notyfService.Warning("Xóa thành công");
-                return Redirect("/Account/Index");
-            }
-            else
-            {
-                notyfService.Warning("Xóa không thành công");
-                return Redirect("/Account/Index");
-            }
+
+            return Json(new { statusCode = result.StatusCode });
         }
 
+ 
         public IActionResult UpdateProfile()
         {
             return View();
         }
+
+
         [HttpPost, ActionName("UpdateProfile")]
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> UpdateProfile([FromForm] UpdateUserViewModel model)
@@ -156,6 +153,7 @@ namespace WebAdmin.Controllers
             else
             {
                 var result = await accountService.UpdateProfile(model, token);
+
                 if (result.StatusCode == 200)
                 {
                     notyfService.Success("Cập nhật thành công!");
@@ -169,12 +167,14 @@ namespace WebAdmin.Controllers
             }
         }
 
+
         public IActionResult ChangePassword()
         {
             return View();
         }
 
         [HttpPost]
+  
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
             string token = User.GetSpecificClaim("token");
@@ -197,7 +197,63 @@ namespace WebAdmin.Controllers
                 }
             }
         }
+
         [Authorize(Roles = "Admin")]
+        public IActionResult ResetPassword(string UserId)
+        {
+            string token = User.GetSpecificClaim("token");
+            ViewBag.UserId = UserId;
+            ViewBag.Token = token;
+            return View();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost, ActionName("ResetPassword")]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+           if (!ModelState.IsValid && !model.ByPass)
+            {
+                ViewBag.UserId = model.UserId;
+                ViewBag.Token = model.token;
+                notyfService.Error("Chưa điền mật khẩu");
+                return View(model);
+            }
+            else  
+            {
+                if (model.ByPass)
+                {
+                    model.Password = "012345678";
+                    model.ConfirmPassword = "012345678";
+                }
+
+                var result = await accountService.ResetPassword(model);
+
+                if (result.StatusCode == 200)
+                {
+                    if (model.ByPass)
+                    {
+                        notyfService.Success("Mật khẩu mới: 012345678");
+                    }
+                    else
+                    {
+                        notyfService.Success("Đã đặt lại mật khẩu mới!");
+                    }
+                   
+                    return RedirectToAction("Index", "Account");
+                }
+                else
+                {
+
+                    ViewBag.UserId = model.UserId;
+                    ViewBag.Token = model.token;
+                    
+                    notyfService.Error("Đặt mật khẩu mới đã xảy ra lỗi!" + result.StatusCode.ToString());
+                    return View(model);
+                }
+            }
+        }
+
         public async Task<IActionResult> Detail(string userId)
         {
             if (userId == null)
@@ -210,8 +266,6 @@ namespace WebAdmin.Controllers
             ViewBag.role = role;
             return View(user);
         }
-
-        
 
         private ClaimsPrincipal ValidateToken(string token)
         {
@@ -230,6 +284,7 @@ namespace WebAdmin.Controllers
             return principal;
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

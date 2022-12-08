@@ -14,6 +14,7 @@
         </nav>
     </div>
 </div>
+
 <div class="card">
     <div class="card-body">
         <div class="table-responsive text-center">
@@ -41,25 +42,58 @@
                                 <td>@item.UserName</td>
                                 <td>@item.OrderDate</td>
                                 <td>@item.TotalMoney.ToString("#,##0") VNĐ</td>
-                                <td>@item.Status</td>
+
+                                <td>
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <a data-target="#modal-header" data-toggle="modal" class="btn btn-secondary btn-tone m-r-5" asp-controller="Order" asp-action="ChangeStatus" asp-route-id="@item.OrderId">
+                                            @item.Status
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        @item.Status
+                                    }
+                                </td>
+
                                 <td>
                                     @if (item.Paid == true)
                                     {
                                         <div class="d-flex align-items-center">
-                                            <div class="badge badge-success badge-dot m-r-10"></div>
-                                            <div>Đã thanh toán</div>
+                                            <div class="checkbox text-success">
+                                                <input id="checkbox1" type="checkbox" checked="" disabled="">
+                                                <label for="checkbox1">Đã thanh toán</label>
+                                            </div>
                                         </div>
                                     }
                                     else
                                     {
                                         <div class="d-flex align-items-center">
-                                            <div class="badge badge-danger badge-dot m-r-10"></div>
-                                            <div>Chưa thanh toán</div>
+                                            <a data-target="#modal-header-pay" data-toggle="modal" class="btn-tone m-r-5 text-danger" asp-controller="Order" asp-action="PayStatus" asp-route-id="@item.OrderId">
+                                                <div class="checkbox">
+                                                    <input id="checkbox-pay" type="checkbox" rea>
+                                                    <label for="checkbox-pay">Chưa thanh toán</label>
+                                                </div>
+                                            </a>
+
                                         </div>
+
+
                                     }
                                 </td>
                                 <td>
-                                    <a data-target="#modal-header" data-toggle="modal" class="btn btn-secondary btn-tone m-r-5" asp-controller="Order" asp-action="ChangeStatus" asp-route-id="@item.OrderId">Cập nhật trạng thái</a>
+                                    @if (item.TransactStatusId < 3)
+                                    {
+                                        <a data-target="#modal-header-next" data-toggle="modal" class="btn btn-primary btn-tone m-r-5" asp-controller="Order" asp-action="NextStatus" asp-route-id="@item.OrderId">
+                                            Chuyển trạng thái
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" class="btn btn-primary btn-tone m-r-5" disabled>
+                                            Đã hoàn thành
+                                        </button>
+                                    }
                                 </td>
                             </tr>
                         }
@@ -75,15 +109,45 @@
         </div>
     </div>
 </div>
+
 <div id="modal-header" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
         </div>
     </div>
 </div>
+
+<div id="modal-header-pay" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+<div id="modal-header-next" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
 @section Script {
     <script>
         $('#modal-header').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var url = button.attr("href");
+            var modal = $(this);
+            modal.find('.modal-content').load(url);
+        });
+
+        $('#modal-header-pay').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var url = button.attr("href");
+            var modal = $(this);
+            modal.find('.modal-content').load(url);
+        });
+
+        $('#modal-header-next').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget);
             var url = button.attr("href");
             var modal = $(this);
