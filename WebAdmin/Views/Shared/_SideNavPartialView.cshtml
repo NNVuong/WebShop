@@ -1,22 +1,33 @@
 ﻿<div class="side-nav">
     <div class="side-nav-inner">
         <ul class="side-nav-menu scrollable">
-           @* <li class="nav-item">
-                <a class="dropdown-toggle" asp-controller="Home" asp-action="Index">
-                    <span class="icon-holder">
-                        <i class="anticon anticon-dashboard"></i>
-                    </span>
-                    <span class="title">Dashboard</span>
-                    <span class="arrow">
-                        <i class="arrow-icon"></i>
-                    </span>
-                </a>
+            @* <li class="nav-item">
+            <a class="dropdown-toggle" asp-controller="Home" asp-action="Index">
+            <span class="icon-holder">
+            <i class="anticon anticon-dashboard"></i>
+            </span>
+            <span class="title">Dashboard</span>
+            <span class="arrow">
+            <i class="arrow-icon"></i>
+            </span>
+            </a>
 
             </li>*@
+            @if (User.IsInRole("Admin"))
+            {
+                <li class="nav-item">
+                    <a class="dropdown-toggle" href="/Sales?BeginTime=@DateTime.Today.ToString()&EndTime=@DateTime.Today.AddDays(1).ToString()&Page=1">
+                        <span class="icon-holder">
+                            <i class="anticon anticon-money-collect"></i>
+                        </span>
+                        <span class="title">Thống kê doanh thu</span>
+                    </a>
+                </li>
+            }
             <li class="nav-item">
                 <a class="dropdown-toggle" asp-controller="Order" asp-action="Index">
                     <span class="icon-holder">
-                        <i class="anticon anticon-file"></i>
+                       <i class="anticon anticon-file-text"></i>
                     </span>
                     <span class="title">Quản lý đơn hàng</span>
                 </a>
@@ -40,20 +51,20 @@
 
 
             @*<li class="nav-item dropdown">
-                <a class="dropdown-toggle" href="javascript:void(0);">
-                    <span class="icon-holder">
-                        <i class="anticon anticon-form"></i>
-                    </span>
-                    <span class="title">Doanh số</span>
-                    <span class="arrow">
-                        <i class="arrow-icon"></i>
-                    </span>
-                </a>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a href="#">Chưa cập nhật</a>
-                    </li>
-                </ul>
+            <a class="dropdown-toggle" href="javascript:void(0);">
+            <span class="icon-holder">
+            <i class="anticon anticon-form"></i>
+            </span>
+            <span class="title">Doanh số</span>
+            <span class="arrow">
+            <i class="arrow-icon"></i>
+            </span>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+            <a href="#">Chưa cập nhật</a>
+            </li>
+            </ul>
             </li>*@
 
             @if (User.IsInRole("Admin"))

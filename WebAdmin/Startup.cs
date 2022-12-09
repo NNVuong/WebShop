@@ -30,6 +30,7 @@ namespace WebAdmin
         {
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<ISalesService, SalesService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();

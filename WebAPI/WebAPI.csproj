@@ -52,7 +52,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="StoredProcedure\" />
     <Folder Include="Helper\" />
     <Folder Include="wwwroot\" />
     <Folder Include="wwwroot\images\" />

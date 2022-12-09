@@ -5,9 +5,14 @@ using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Rewrite;
 using PagedList.Core;
+using Service.Implementations;
 using Service.Interfaces;
+using SharedObjects.Models;
 using SharedObjects.ValueObjects;
+using SharedObjects.ViewModels;
+using WebAdmin.Models;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,46 +22,64 @@ namespace WebAdmin.Controllers
     public class SalesController : Controller
     {
         private readonly IOrderService orderService;
+        private readonly ISalesService salesService;
         private readonly INotyfService notyfService;
 
-        public SalesController(IOrderService orderService, INotyfService notyfService)
+        public SalesController(ISalesService salesService, INotyfService notyfService, IOrderService orderService)
         {
-            this.orderService = orderService;
+            this.salesService = salesService;
             this.notyfService = notyfService;
+            this.orderService = orderService;
         }
 
-        public async Task<IActionResult> Index(int? page)
+        public async Task<IActionResult> Index(FilterViewModel model, int page = 1)
         {
-            var pageNumber = page == null || page <= 0 ? 1 : page.Value;
-            var pageSize = 10;
-            var orders = await orderService.GetAll();
-            var result = orders.AsQueryable();
-            PagedList<VOrder> models = new PagedList<VOrder>(result, pageNumber, pageSize);
+            var pageNumber = page;
+            var pageSize = 100;
+
+            var sales = await salesService.GetAll();
+            var result = sales.Where(x => (model.BeginTime <= x.PaymentDate && x.PaymentDate <= model.EndTime)).AsQueryable();
+
+            double TotalSum = 0;
+            if (result.Count() > 0)
+            {
+                foreach (var r in result)
+                {
+                    TotalSum += (double)r.Price * r.Amount;
+                }
+            }
+
+            PagedList<VSales> models = new PagedList<VSales>(result, pageNumber, pageSize);
+
             ViewBag.CurrentPage = pageNumber;
+            ViewBag.PageLength = (int)Math.Ceiling((Double)result.Count() / (Double)pageSize);
+            ViewBag.Begin = model.BeginTime;
+            ViewBag.End = model.EndTime;
+            ViewBag.TotalSum = TotalSum;
+
             return View(models);
         }
-       
-        public async Task<IActionResult> ChangeStatus(int id)
+
+        public IActionResult Filter()
         {
-            var order = await orderService.GetOrderById(id);
-            var status = await orderService.GetTransactStatus();
-            ViewBag.Status = status;
-            return PartialView("ChangeStatus", order);
+            FilterViewModel model = new FilterViewModel();
+            model.BeginTime = DateTime.Today;
+            model.EndTime = DateTime.Today.AddDays(1);
+            return PartialView("Filter", model);
         }
+
         [HttpPost]
-        public async Task<IActionResult> ChangeStatus(int id, VOrder model)
+        public IActionResult Filter(FilterViewModel model)
         {
-            var result = await orderService.UpdateStatus(id, model);
-            if (result.StatusCode == 200)
+            if (model.EndTime < model.BeginTime)
             {
-                notyfService.Success("Cập nhật thành công!");
-                return RedirectToAction("Index", "Order");
+                model.BeginTime = DateTime.Today;
+                model.EndTime = DateTime.Today.AddDays(1);
+                notyfService.Warning("Chọn sai mốc thời gian!");
+                return RedirectToAction("Index", model);
             }
-            else
-            {
-                ModelState.AddModelError(string.Empty, result.Message);
-                return View(model);
-            }
+            notyfService.Success("Đã lọc thành công!");
+            return RedirectToAction("Index", model);
         }
     }
 }

@@ -10,25 +10,25 @@
     <link rel="shortcut icon" href="~/Adminassets/images/logo/icontitle.png">
 
     <!-- page css -->
+    <link href="~/Adminassets/vendors/select2/select2.css" rel="stylesheet">
     <link href="~/Adminassets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css" rel="stylesheet">
 
     <!-- Core css -->
     <link href="~/Adminassets/css/app.min.css" rel="stylesheet">
-   @await RenderSectionAsync("Styles", required: false)
+    @await RenderSectionAsync("Styles", required: false)
 
 </head>
 
 <body>
     <div class="app">
         <div class="layout">
+
             <!-- Header START -->
             @await Html.PartialAsync("_HeaderPartialView.cshtml")
             <!-- Header END -->
-
             <!-- Side Nav START -->
             @await Html.PartialAsync("_SideNavPartialView.cshtml")
             <!-- Side Nav END -->
-
             <!-- Page Container START -->
             <div class="page-container">
 
@@ -37,28 +37,27 @@
                     @RenderBody()
                 </div>
                 <!-- Content Wrapper END -->
-
-
                 <!-- Footer START -->
-                 @await Html.PartialAsync("_FooterPartialView.cshtml")
+                @await Html.PartialAsync("_FooterPartialView.cshtml")
                 <!-- Footer END -->
 
             </div>
             <!-- Page Container END -->
-            
             <!-- Quick View START -->
-            
             <!-- Quick View END -->
         </div>
     </div>
-
 
     <!-- Core Vendors JS -->
     <script src="~/Adminassets/js/vendors.min.js"></script>
 
     <!-- page js -->
+    <script src="~/Adminassets/js/pages/form-elements.js"></script>
+    <script src="~/Adminassets/vendors/quill/quill.min.js"></script>
+    <script src="~/Adminassets/vendors/select2/select2.min.js"></script>
     <script src="~/Adminassets/vendors/chartjs/Chart.min.js"></script>
     <script src="~/Adminassets/js/pages/dashboard-e-commerce.js"></script>
+    <script src="~/Adminassets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
 
     <!-- Core JS -->
     <script src="~/Adminassets/js/app.min.js"></script>

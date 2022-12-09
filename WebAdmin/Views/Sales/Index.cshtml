@@ -1,0 +1,153 @@
+﻿@model PagedList.Core.IPagedList<SharedObjects.ValueObjects.VSales>
+@{
+    int PageCurrent = ViewBag.CurrentPage;
+    int PageLength = ViewBag.PageLength;
+    int PageBack = PageCurrent - 1;
+    int PageNext = PageCurrent + 1;
+    DateTime Begin = ViewBag.Begin;
+    DateTime End = ViewBag.End;
+    string CurrentFilter = "BeginTime=" + Begin + "&EndTime=" + End;
+    int PageNextPlus = PageNext + 1;
+    int PageNextMinus = PageBack - 1;
+
+    ViewData["Title"] = "Danh sách đơn hàng " + PageCurrent;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    double SPrice = ViewBag.TotalSum;
+}
+
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
+            <span class="breadcrumb-item active">Danh thu từ @Begin.ToString("dd/MM/yyyy") đến @End.ToString("dd/MM/yyyy") - Trang @PageCurrent</span>
+        </nav>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+
+        <div class="d-flex align-items-center">
+            <table class="table table-hover e-commerce-table">
+                <thead>
+                    <tr>
+                        <th>
+                            <a data-target="#modal-header" data-toggle="modal" class="btn btn-info btn-tone m-r-5" asp-controller="Sales" asp-action="Filter">
+                                <i class="anticon anticon-search"></i> Chọn mốc thời gian xem
+                            </a>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="font-weight-bolder font-size-15 table-light">
+                        <th>Tổng doanh thu từ "@Begin.ToString("dd/MM/yyyy")" đến "@End.ToString("dd/MM/yyyy")":</th>
+                        <th>@SPrice.ToString("#,##0") VNĐ</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-responsive text-center">
+            <table class="table table-hover e-commerce-table">
+                <thead>
+                    <tr>
+                        <th>Thời gian thanh toán</th>
+                        <th>Sản phẩm</th>
+                        <th>Giá</th>
+                        <th>Số lượng</th>
+                        <th>Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            var total = item.Amount * (double)item.Price;
+                            <tr>
+                                <td>@item.PaymentDate.ToString("HH:mmtt dd'/'MM'/'yyyy")</td>
+                                <td>@item.ProductName</td>
+                                <td>@item.Price.ToString("#,##0") VNĐ</td>
+                                <td>@item.Amount</td>
+                                <td>@total.ToString("#,##0") VNĐ</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+
+            </table>
+
+            <!-- Pagination -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    @if (PageCurrent > 1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="?@CurrentFilter&Page=1" aria-label="Previous">
+                                <span class="fa fa-chevron-left"></span>
+                            </a>
+                        </li>
+                        if (PageNextMinus >= 1)
+                        {
+                            <li class="page-item"><a class="page-link" href="?@CurrentFilter&Page=@PageNextMinus">@PageNextMinus</a></li>
+                        }
+                        <li class="page-item"><a class="page-link" href="?@CurrentFilter&Page=@PageBack">@PageBack</a></li>
+                    }
+                    else
+                    {
+                        <li class="page-item disabled">
+                            <a class="page-link" href="?@CurrentFilter&Page=1" aria-label="Previous">
+                                <span class="fa fa-chevron-left"></span>
+                            </a>
+                        </li>
+                    }
+
+                    <li class="page-item active"><a class="page-link" href="?@CurrentFilter&Page=@PageCurrent">@PageCurrent</a></li>
+
+                    @if (PageCurrent < PageLength)
+                    {
+                        <li class="page-item"><a class="page-link" href="?@CurrentFilter&Page=@PageNext">@PageNext</a></li>
+                        if (PageNextPlus <= PageLength)
+                        {
+                            <li class="page-item"><a class="page-link" href="?@CurrentFilter&Page=@PageNextPlus">@PageNextPlus</a></li>
+                        }
+                        <li class="page-item">
+                            <a class="page-link" href="?@CurrentFilter&Page=@PageLength" aria-label="Next">
+                                <span class="fa fa-chevron-right"></span>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item disabled">
+                            <a class="page-link" href="?@CurrentFilter&Page=1" aria-label="Next">
+                                <span class="fa fa-chevron-right"></span>
+                            </a>
+                        </li>
+                    }
+
+                </ul>
+            </nav>
+            <!-- End Pagination -->
+
+        </div>
+    </div>
+</div>
+
+<div id="modal-header" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+@section Script {
+    <script>
+        $('#modal-header').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var url = button.attr("href");
+            var modal = $(this);
+            modal.find('.modal-content').load(url);
+        });
+    </script>
+}

@@ -23,6 +23,7 @@ namespace SharedObjects.Models
         public virtual DbSet<TransactStatus> TransactStatuses { get; set; }
         public virtual DbSet<VCategory> VCategory { get; set; }
         public virtual DbSet<VProduct> VProduct { get; set; }
+        public virtual DbSet<VSales> VSales { get; set; }
         public virtual DbSet<VProductImage> VProductImage { get; set; }
         public virtual DbSet<VProductCategory> VProductCategory { get; set; }
         public virtual DbSet<VOrder> VOrder { get; set; }

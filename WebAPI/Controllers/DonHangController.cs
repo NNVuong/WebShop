@@ -79,12 +79,21 @@ namespace WebAPI.Controllers
             var result = context.Set<VOrder>().FromSqlRaw(OrderSP.SP_Get_Order, userId,orderId).AsNoTracking().AsEnumerable().FirstOrDefault();
             return result;
         }
+
         [HttpGet("get-all")]
         public async Task<List<VOrder>> GetAll()
         {
             var result = await context.Set<VOrder>().FromSqlRaw(OrderSP.SP_Get_All).AsNoTracking().ToListAsync();
             return result;
         }
+
+        [HttpGet("get-all-sales")]
+        public async Task<List<VSales>> GetAllSales()
+        {
+            var result = await context.Set<VSales>().FromSqlRaw(SalesSP.SP_Get_All).AsNoTracking().ToListAsync();
+            return result;
+        }
+
         [HttpGet("get-order-by-id/{orderId}")]
         public VOrder GetOrderById(int orderId)
         {
