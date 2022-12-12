@@ -65,8 +65,10 @@ namespace WebAdmin.Controllers
             }
             else
             {
-                ModelState.AddModelError(string.Empty, result.Message);
-                return View(model);
+                notyfService.Error("Đã xảy ra lỗi");
+                notyfService.Information("Kiểm tra lại hàng tồn kho");
+                //ModelState.AddModelError(string.Empty, result.Message);
+                return RedirectToAction("Index", "Order");
             }
         }
 
@@ -89,7 +91,8 @@ namespace WebAdmin.Controllers
             }
             else
             {
-                ModelState.AddModelError(string.Empty, result.Message);
+                notyfService.Error("Cập nhật không thành công!");
+                //ModelState.AddModelError(string.Empty, result.Message);
                 return View(model);
             }
         }

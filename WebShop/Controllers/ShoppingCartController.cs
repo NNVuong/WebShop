@@ -14,10 +14,12 @@ namespace WebShop.Controllers
     public class ShoppingCartController : Controller
     {
         private readonly IProductService productService;
+        public readonly INotyfService notyfService;
 
-        public ShoppingCartController(IProductService productService)
+        public ShoppingCartController(IProductService productService, INotyfService notyfService)
         {
             this.productService = productService;
+            this.notyfService = notyfService;
         }
         public List<CartItem> GioHang
         {
@@ -56,7 +58,7 @@ namespace WebShop.Controllers
                     };
                     cart.Add(item);//Them vao gio
                 }
-
+                notyfService.Success("Đã thêm vào giỏ hàng");
                 //Luu lai Session
                 HttpContext.Session.Set<List<CartItem>>("GioHang", cart);
                 return Json(new { success = true });

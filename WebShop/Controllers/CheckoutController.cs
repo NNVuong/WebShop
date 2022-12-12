@@ -17,7 +17,7 @@ namespace WebShop.Controllers
     {
         private readonly IAccountService accountService;
         private readonly IOrderService orderService;
-        private readonly INotyfService notyfService;
+        public readonly INotyfService notyfService;
 
         public CheckoutController(IAccountService accountService, IOrderService orderService, INotyfService notyfService)
         {
@@ -76,6 +76,7 @@ namespace WebShop.Controllers
                     order.Address = muaHang.Address;
                     order.Phone = muaHang.Phone;
                     order.TotalMoney = Convert.ToInt32(cart.Sum(x => x.TotalMoney));
+
                     var orderId = await orderService.Add(order);
 
                     //tao danh sach don hang
@@ -92,6 +93,9 @@ namespace WebShop.Controllers
                     }
                     //clear gio hang
                     HttpContext.Session.Remove("GioHang");
+
+                    
+
                     //Xuat thong bao
                     notyfService.Success("Đơn hàng đặt thành công");
                     //cap nhat thong tin khach hang

@@ -58,7 +58,8 @@ namespace WebAdmin.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, result.Message);
+                    //ModelState.AddModelError(string.Empty, result.Message);
+                    notyfService.Error("Thêm mới không thành công!");
                     return View(model);
                 }
             }
@@ -88,7 +89,8 @@ namespace WebAdmin.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, result.Message);
+                    notyfService.Error("Cập nhật không thành công!");
+                    //ModelState.AddModelError(string.Empty, result.Message);
                     return View(model);
                 }
             }

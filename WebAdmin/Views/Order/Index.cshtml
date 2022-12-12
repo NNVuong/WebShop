@@ -57,29 +57,52 @@
                                 </td>
 
                                 <td>
-                                    @if (item.Paid == true)
+                                    @if (item.TransactStatusId == 4)
                                     {
-                                        <div class="d-flex align-items-center">
-                                            <div class="checkbox text-success">
-                                                <input id="checkbox1" type="checkbox" checked="" disabled="">
-                                                <label for="checkbox1">Đã thanh toán</label>
+                                        if (item.Paid == true)
+                                        {
+                                            <div class="d-flex align-items-center">
+                                                <div class="checkbox text-success">
+                                                    <input id="checkbox1" type="checkbox" checked="" disabled="">
+                                                    <label for="checkbox1">Đã thanh toán</label>
+                                                </div>
                                             </div>
-                                        </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="d-flex align-items-center">
+                                                <div class="checkbox text-danger">
+                                                    <input id="checkbox1" type="checkbox" disabled="">
+                                                    <label for="checkbox1">Chưa thanh toán</label>
+                                                </div>
+                                            </div>
+                                        }
                                     }
                                     else
                                     {
-                                        <div class="d-flex align-items-center">
-                                            <a data-target="#modal-header-pay" data-toggle="modal" class="btn-tone m-r-5 text-danger" asp-controller="Order" asp-action="PayStatus" asp-route-id="@item.OrderId">
-                                                <div class="checkbox">
-                                                    <input id="checkbox-pay" type="checkbox" rea>
-                                                    <label for="checkbox-pay">Chưa thanh toán</label>
+                                        if (item.Paid == true)
+                                        {
+                                            <div class="d-flex align-items-center">
+                                                <div class="checkbox text-success">
+                                                    <input id="checkbox1" type="checkbox" checked="" disabled="">
+                                                    <label for="checkbox1">Đã thanh toán</label>
                                                 </div>
-                                            </a>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="d-flex align-items-center">
+                                                <a data-target="#modal-header-pay" data-toggle="modal" class="btn-tone m-r-5 text-danger" asp-controller="Order" asp-action="PayStatus" asp-route-id="@item.OrderId">
+                                                    <div class="checkbox">
+                                                        <input id="checkbox-pay" type="checkbox">
+                                                        <label for="checkbox-pay">Chưa thanh toán</label>
+                                                    </div>
+                                                </a>
 
-                                        </div>
-
-
+                                            </div>
+                                        }
                                     }
+
                                 </td>
                                 <td>
                                     @if (item.TransactStatusId < 3)

@@ -25,7 +25,7 @@ namespace WebShop.Controllers
     {
         private readonly IConfiguration configuration;
         private readonly IAccountService accountService;
-        private readonly INotyfService notyfService;
+        public readonly INotyfService notyfService;
         private readonly IOrderService orderService;
 
         public AccountController(IConfiguration configuration, IAccountService accountService, INotyfService notyfService, IOrderService orderService)
@@ -78,7 +78,8 @@ namespace WebShop.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, result.Message);
+                    notyfService.Error("Đăng ký không thành công!");
+                    //ModelState.AddModelError(string.Empty, result.Message);
                     return View(model);
                 }
             }
@@ -119,7 +120,8 @@ namespace WebShop.Controllers
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Sai tên đăng nhập hoặc mật khẩu!");
+                notyfService.Error("Sai tên đăng nhập hoặc mật khẩu!");
+                //ModelState.AddModelError(string.Empty, "Sai tên đăng nhập hoặc mật khẩu!");
                 return View(model);
             }
         }

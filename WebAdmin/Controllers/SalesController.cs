@@ -1,35 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Rewrite;
 using PagedList.Core;
-using Service.Implementations;
 using Service.Interfaces;
-using SharedObjects.Models;
 using SharedObjects.ValueObjects;
 using SharedObjects.ViewModels;
-using WebAdmin.Models;
-
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebAdmin.Controllers
 {
-    [Authorize(Roles = "Admin,Editor")]
+    [Authorize(Roles = "Admin")]
     public class SalesController : Controller
     {
-        private readonly IOrderService orderService;
         private readonly ISalesService salesService;
         private readonly INotyfService notyfService;
 
-        public SalesController(ISalesService salesService, INotyfService notyfService, IOrderService orderService)
+        public SalesController(ISalesService salesService, INotyfService notyfService)
         {
             this.salesService = salesService;
             this.notyfService = notyfService;
-            this.orderService = orderService;
         }
 
         public async Task<IActionResult> Index(FilterViewModel model, int page = 1)

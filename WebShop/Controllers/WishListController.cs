@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;
@@ -15,10 +16,12 @@ namespace WebShop.Controllers
     public class WishListController : Controller
     {
         private readonly IProductService productService;
+        public readonly INotyfService notyfService;
 
-        public WishListController(IProductService productService)
+        public WishListController(IProductService productService, INotyfService notyfService)
         {
             this.productService = productService;
+            this.notyfService = notyfService;
         }
         public List<WishList> WishList
         {

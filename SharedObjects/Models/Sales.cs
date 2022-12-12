@@ -9,6 +9,7 @@ namespace SharedObjects.Models
     public partial class Sales
     {
         [Key]
+        public int OrderId { get; set; }
         public string ProductName { get; set; }
         public decimal Price { get; set; }
         public int Amount { get; set; }
@@ -16,5 +17,6 @@ namespace SharedObjects.Models
         public DateTime? StartT { get; set; }
 
         public DateTime? EndT { get; set; }
+        
     }
 }

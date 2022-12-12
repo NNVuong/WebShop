@@ -17,7 +17,7 @@ namespace WebShop.Controllers
         private readonly IProductService productService;
         private readonly ICategoryService categoryService;
         private readonly IProductImageService productImage;
-        private readonly INotyfService notyfService;
+        public readonly INotyfService notyfService;
 
         public ProductController(IProductService productService, ICategoryService categoryService, IProductImageService productImage, INotyfService notyfService)
         {

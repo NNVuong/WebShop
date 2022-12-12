@@ -16,8 +16,8 @@ namespace WebShop.Controllers
 {
     public class DonHangController : Controller
     {
-        private readonly INotyfService notyfService;
-        private readonly IOrderService orderService;
+        public readonly INotyfService notyfService;
+        public readonly IOrderService orderService;
 
         public DonHangController(IOrderService orderService, INotyfService notyfService)
         {
@@ -40,7 +40,9 @@ namespace WebShop.Controllers
             }
             catch 
             {
-                return NotFound();
+                //return NotFound();
+                notyfService.Error("Đã xảy ra lỗi");
+                return RedirectToAction("Index", "Home");
             }
         }
 
@@ -57,7 +59,10 @@ namespace WebShop.Controllers
             }
             catch
             {
-                return NotFound();
+
+                //return NotFound();
+                notyfService.Error("Đã xảy ra lỗi");
+                return RedirectToAction("Index", "Home");
             }
         }
 
@@ -72,7 +77,8 @@ namespace WebShop.Controllers
             }
             else
             {
-                ModelState.AddModelError(string.Empty, result.Message);
+                notyfService.Error("Đã xảy ra lỗi");
+                //ModelState.AddModelError(string.Empty, result.Message);
                 return View(model);
             }
         }

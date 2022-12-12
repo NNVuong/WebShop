@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;
 using WebShop.Models;
@@ -12,11 +13,13 @@ namespace WebShop.Controllers
 {
     public class NewController : Controller
     {
+        public readonly INotyfService notyfService;
         private readonly INewService newService;
 
-        public NewController(INewService newService)
+        public NewController(INewService newService, INotyfService notyfService)
         {
             this.newService = newService;
+            this.notyfService = notyfService;
         }
         public async Task<IActionResult> Index()
         {

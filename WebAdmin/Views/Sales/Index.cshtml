@@ -50,7 +50,8 @@
         <div class="table-responsive text-center">
             <table class="table table-hover e-commerce-table">
                 <thead>
-                    <tr>
+                    <tr class="table-primary">
+                        <th>Mã đơn hàng</th>
                         <th>Thời gian thanh toán</th>
                         <th>Sản phẩm</th>
                         <th>Giá</th>
@@ -61,10 +62,12 @@
                 <tbody>
                     @if (Model != null)
                     {
+
                         foreach (var item in Model)
                         {
                             var total = item.Amount * (double)item.Price;
                             <tr>
+                                <td>@item.OrderId</td>
                                 <td>@item.PaymentDate.ToString("HH:mmtt dd'/'MM'/'yyyy")</td>
                                 <td>@item.ProductName</td>
                                 <td>@item.Price.ToString("#,##0") VNĐ</td>

@@ -47,6 +47,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Service\Service.csproj" />
     <ProjectReference Include="..\SharedObjects\SharedObjects.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>

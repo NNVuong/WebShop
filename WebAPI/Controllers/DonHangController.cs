@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Service.Implementations;
 using SharedObjects.Commons;
 using SharedObjects.Models;
 using SharedObjects.ValueObjects;
@@ -74,9 +75,9 @@ namespace WebAPI.Controllers
             return result;
         }
         [HttpGet("get-orders/{userId}/{orderId}")]
-        public VOrder GetOrder(string userId,int orderId)
+        public VOrder GetOrder(string userId, int orderId)
         {
-            var result = context.Set<VOrder>().FromSqlRaw(OrderSP.SP_Get_Order, userId,orderId).AsNoTracking().AsEnumerable().FirstOrDefault();
+            var result = context.Set<VOrder>().FromSqlRaw(OrderSP.SP_Get_Order, userId, orderId).AsNoTracking().AsEnumerable().FirstOrDefault();
             return result;
         }
 
@@ -119,19 +120,48 @@ namespace WebAPI.Controllers
                 {
                     donhang.PaymentDate = DateTime.Now;
                 }
-                if (donhang.TransactStatusId == 4) donhang.Deleted = true;
-                else donhang.Deleted = false;
-                if (donhang.TransactStatusId == 2 || donhang.TransactStatusId == 3) donhang.ShipDate = DateTime.Now;
+
+                if (donhang.TransactStatusId == 4)
+                {
+                    donhang.Deleted = true;
+                }
+
+                if (donhang.TransactStatusId == 2 || donhang.TransactStatusId == 3)
+                {
+                    donhang.ShipDate = DateTime.Now;
+                }
+                if (donhang.TransactStatusId == 2)
+                {
+                    var result = context.OrderDetails.Where(x => x.OrderId == id).AsNoTracking().ToList();
+
+                    foreach (var item in result)
+                    {
+                        var product = await context.Products.Where(x => x.ProductId == item.ProductId).AsNoTracking().FirstOrDefaultAsync();
+                        if (product == null || product.UnitsInStock - item.Amount.Value < 0)
+                        {
+                            return BadRequest(new ResponseResult(400));
+                        }
+                    }
+
+                    foreach (var item in result)
+                    {
+                        var product = await context.Products.Where(x => x.ProductId == item.ProductId).AsNoTracking().FirstOrDefaultAsync();
+                        product.UnitsInStock -= item.Amount.Value;
+                        context.Update(product);
+                    }
+                }
+
+
                 context.Update(donhang);
                 await context.SaveChangesAsync();
                 return Ok(new ResponseResult(200));
             }
-            catch 
+            catch
             {
                 return BadRequest(new ResponseResult(400));
             }
         }
 
-        
+
     }
 }

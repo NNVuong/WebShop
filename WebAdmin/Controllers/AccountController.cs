@@ -85,8 +85,8 @@ namespace WebAdmin.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, result.Message);
-                    return View(model);
+                    notyfService.Error("Thêm mới không thành công!");
+                    return RedirectToAction("Index", "Account");
                 }
             }
         }
@@ -119,7 +119,8 @@ namespace WebAdmin.Controllers
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Sai tên đăng nhập hoặc mật khẩu!");
+                //ModelState.AddModelError(string.Empty, "Sai tên đăng nhập hoặc mật khẩu!");
+                notyfService.Error("Đăng nhập không thành công!");
                 return View(model);
             }
         }
@@ -161,7 +162,8 @@ namespace WebAdmin.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, result.Message);
+                    notyfService.Error("Cập nhật không thành công!");
+                    //ModelState.AddModelError(string.Empty, result.Message);
                     return View(model);
                 }
             }
@@ -188,11 +190,13 @@ namespace WebAdmin.Controllers
                 if (result.StatusCode == 200)
                 {
                     notyfService.Success("Đổi mật khẩu thành công!");
-                    return RedirectToAction("ChangePassword", "Account");
+                    //return RedirectToAction("ChangePassword", "Account");
+                    return Redirect("/Home/Index");
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, result.Message);
+                    notyfService.Error("Đổi mật khẩu không thành công!");
+                    //ModelState.AddModelError(string.Empty, result.Message);
                     return View(model);
                 }
             }
