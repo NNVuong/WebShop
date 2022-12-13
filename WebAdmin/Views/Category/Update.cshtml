@@ -18,7 +18,7 @@
         <form asp-controller="Category" asp-action="Update" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="CatId" />
-            
+
             <div class="page-header no-gutters has-tab">
                 <div class="d-md-flex m-b-15 align-items-center justify-content-between">
                     <div class="m-b-15">
@@ -29,22 +29,23 @@
                     </div>
                 </div>
             </div>
-            
-            
+
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label class="font-weight-semibold" for="productName">Tên danh mục</label>
                     <input type="text" class="form-control" asp-for="CatName">
                 </div>
             </div>
-            @*<div class="row">
-                        <div class="form-group d-flex align-items-center">
-                            <div class="checkbox">
-                                <input asp-for="Published" type="checkbox" />
-                                <label for="Published">Public</label>
-                            </div>
-                        </div>
-                    </div>*@
+
+            <div class="row">
+                <div class="form-group d-flex align-items-center">
+                    <div class="checkbox">
+                        <input asp-for="Published" type="checkbox" />
+                        <label for="Published">Public</label>
+                    </div>
+                </div>
+            </div>
+
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="inputAvatar4">Ảnh đại diện</label>

@@ -227,8 +227,8 @@ namespace WebAdmin.Controllers
             {
                 if (model.ByPass)
                 {
-                    model.Password = "012345678";
-                    model.ConfirmPassword = "012345678";
+                    model.Password = "0123456789";
+                    model.ConfirmPassword = "0123456789";
                 }
 
                 var result = await accountService.ResetPassword(model);
@@ -237,7 +237,7 @@ namespace WebAdmin.Controllers
                 {
                     if (model.ByPass)
                     {
-                        notyfService.Success("Mật khẩu mới: 012345678");
+                        notyfService.Success("Mật khẩu mới: 0123456789");
                     }
                     else
                     {

@@ -5,10 +5,7 @@
     var categories = ViewBag.categories as List<SharedObjects.ValueObjects.VCategory>;
     string url = $"{HostConfig.Domain}/images/product/{Model.Avatar}";
 }
-@section Styles{
-    <link href="~/Adminassets/summernote/summernote-bs4.css" rel="stylesheet" />
-    <link href="~/Adminassets/summernote/summernote.css" rel="stylesheet" />
-}
+
 <form asp-controller="Product" asp-action="Update" method="post" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="ProductId" />
@@ -118,20 +115,3 @@
     </div>
 </form>
 
-@section Script{
-    <script src="~/Adminassets/vendors/select2/select2.min.js"></script>
-    <script src="~/Adminassets/js/pages/e-commerce-product-edit.js"></script>
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.1/jquery.validate.min.js"></script>
-    <script src="~/Adminassets/summernote/summernote-bs4.js"></script>
-
-    <script>jQuery(document).ready(function () {
-            $('.summernote').summernote({
-                fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New'],
-                styleTags: ['p', 'h1', 'h2', 'h3', 'h4', 'h5'],
-                height: 200,
-                minHeight: null,
-                maxHeight: null,
-                focus: true
-            });
-        });</script>
-}

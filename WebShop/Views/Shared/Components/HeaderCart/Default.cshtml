@@ -33,11 +33,11 @@
                 <a asp-controller="ShoppingCart" asp-action="Index" class="theme-btn-1 btn btn-effect-1">Chi tiết</a>
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <a href="/checkout.html" class="theme-btn-2 btn btn-effect-2">Thanh toán</a>
+                    <a href="/checkout.html" class="theme-btn-2 btn btn-effect-2">Đặt hàng</a>
                 }
                 else
                 {
-                    <a href="/dang-nhap.html?returnUrl=/checkout.html" class="theme-btn-2 btn btn-effect-2">Thanh toán</a>
+                    <a href="/dang-nhap.html?returnUrl=/checkout.html" class="theme-btn-2 btn btn-effect-2">Đặt hàng</a>
                 }
             </div>
         </div>
