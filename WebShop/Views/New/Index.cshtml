@@ -1,5 +1,12 @@
-﻿@model List<SharedObjects.ValueObjects.VNew>
+﻿@model PagedList.Core.IPagedList<SharedObjects.ValueObjects.VNew>
 @{
+    int PageCurrent = ViewBag.CurrentPage;
+    int PageLength = ViewBag.PageLength;
+    int PageBack = PageCurrent - 1;
+    int PageNext = PageCurrent + 1;
+    int PageNextPlus = PageNext + 1;
+    int PageNextMinus = PageBack - 1;
+
     ViewData["Title"] = "Trang tin tức";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var newRandom = ViewBag.newRandom as IEnumerable<SharedObjects.ValueObjects.VNew>;
@@ -12,7 +19,7 @@
                 <div class="ltn__breadcrumb-inner ltn__breadcrumb-inner-2 justify-content-between">
                     <div class="section-title-area ltn__section-title-2">
                         <h6 class="section-subtitle ltn__secondary-color">//  Welcome to our company</h6>
-                        <h1 class="section-title white-color">Trang tin tức</h1>
+                        <h1 class="section-title white-color">Tin tức</h1>
                     </div>
                     <div class="ltn__breadcrumb-list">
                         <ul>
@@ -39,6 +46,14 @@
                         <div class="ltn__blog-img">
                             <a asp-controller="New" asp-action="Detail" asp-route-id="@item.PostId"><img width="370" height="260" src="@url" alt="#"></a>
                         </div>
+                        @if (item.IsNewFeed)
+                        {
+                            <div class="product-badge">
+                                <ul>
+                                    <li class="sale-badge">Bài đăng mới</li>
+                                </ul>
+                            </div>
+                        }
                         <div class="ltn__blog-brief">
                             <div class="ltn__blog-meta">
                                 <ul>
@@ -46,7 +61,7 @@
                                         <a href="#"><i class="far fa-user"></i>Tác giả: @item.UserName</a>
                                     </li>
                                     <li class="ltn__blog-tags">
-                                        <a href="#"><i class="fas fa-tags"></i>Tag</a>
+                                        <a href="#"><i class="fas fa-tags"></i>Bài đăng mới</a>
                                     </li>
                                 </ul>
                             </div>
@@ -67,23 +82,60 @@
                 <!-- Blog Item -->
             }
         </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="ltn__pagination-area text-center">
-                    <div class="ltn__pagination">
-                        <ul>
-                            <li><a href="#"><i class="fas fa-angle-double-left"></i></a></li>
-                            <li><a href="#">1</a></li>
-                            <li class="active"><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">...</a></li>
-                            <li><a href="#">10</a></li>
-                            <li><a href="#"><i class="fas fa-angle-double-right"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+        <!-- Pagination -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                @if (PageCurrent > 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="?Page=1" aria-label="Previous">
+                            <span class="fa fa-chevron-left"></span>
+                        </a>
+                    </li>
+                    if (PageNextMinus >= 1)
+                    {
+                        <li class="page-item"><a class="page-link" href="?Page=@PageNextMinus">@PageNextMinus</a></li>
+                    }
+                    <li class="page-item"><a class="page-link" href="?Page=@PageBack">@PageBack</a></li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link" href="?Page=1" aria-label="Previous">
+                            <span class="fa fa-chevron-left"></span>
+                        </a>
+                    </li>
+                }
+
+                <li class="page-item active"><a class="page-link" href="?Page=@PageCurrent">@PageCurrent</a></li>
+
+                @if (PageCurrent < PageLength)
+                {
+                    <li class="page-item"><a class="page-link" href="?Page=@PageNext">@PageNext</a></li>
+                    if (PageNextPlus <= PageLength)
+                    {
+                        <li class="page-item"><a class="page-link" href="?Page=@PageNextPlus">@PageNextPlus</a></li>
+                    }
+                    <li class="page-item">
+                        <a class="page-link" href="?Page=@PageLength" aria-label="Next">
+                            <span class="fa fa-chevron-right"></span>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link" href="?Page=1" aria-label="Next">
+                            <span class="fa fa-chevron-right"></span>
+                        </a>
+                    </li>
+                }
+
+            </ul>
+        </nav>
+        <!-- End Pagination -->
+
     </div>
 </div>
 <!-- BLOG AREA END -->

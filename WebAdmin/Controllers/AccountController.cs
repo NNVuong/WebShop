@@ -33,7 +33,7 @@ namespace WebAdmin.Controllers
     {
         private readonly IConfiguration configuration;
         private readonly IAccountService accountService;
-        private readonly INotyfService notyfService;
+        public readonly INotyfService notyfService;
         private readonly IRoleService roleService;
 
         public AccountController(IConfiguration configuration, IAccountService accountService, INotyfService notyfService, IRoleService roleService)
@@ -115,6 +115,7 @@ namespace WebAdmin.Controllers
                 };
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, userPrincipal, authProperty);
                 notyfService.Success("Xin chào: " + userPrincipal.GetSpecificClaim("FullName"));
+
                 return Redirect("/Home/Index");
             }
             else
@@ -131,6 +132,11 @@ namespace WebAdmin.Controllers
             string token = User.GetSpecificClaim("token");
 
             var result = await accountService.Delete(userId, token);
+
+            if (result.StatusCode != 200)
+            {
+                notyfService.Error("Đã xảy ra lỗi");
+            }
 
             return Json(new { statusCode = result.StatusCode });
         }
@@ -191,7 +197,7 @@ namespace WebAdmin.Controllers
                 {
                     notyfService.Success("Đổi mật khẩu thành công!");
                     //return RedirectToAction("ChangePassword", "Account");
-                    return Redirect("/Home/Index");
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {

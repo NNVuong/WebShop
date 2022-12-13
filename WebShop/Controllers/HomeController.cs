@@ -47,6 +47,7 @@ namespace WebShop.Controllers
                 model.Products = lsProductViews;
                 ViewBag.AllProducts = lsProducts;
             }
+
             var lsNews = await newService.Newfeed();
             model.News = lsNews;
             return View(model);

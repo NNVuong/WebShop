@@ -54,10 +54,10 @@
                             <label class="font-weight-semibold" for="productPrice">Giá bán</label>
                             <input type="text" class="form-control" asp-for="Price">
                         </div>
-                        <div class="form-group col-md-6">
+                        @*<div class="form-group col-md-6">
                             <label class="font-weight-semibold" for="productPrice">Discount</label>
                             <input type="text" class="form-control" asp-for="Discount">
-                        </div>
+                        </div>*@
                     </div>
 
                     <div class="row">
@@ -72,7 +72,8 @@
                     </div>
 
                     <div class="row">
-                        <div class="form-group col-md-6">
+
+                        @*<div class="form-group col-md-6">
                             <div class="form-group d-flex align-items-center">
                                 <div class="switch m-r-10">
                                     <input type="checkbox" asp-for="HomeFlag">
@@ -87,7 +88,8 @@
                                 </div>
                                 <label>BestSellers</label>
                             </div>
-                        </div>
+                        </div>*@
+
                         <div class="form-group col-md-6">
                             <label class="font-weight-semibold" for="productSize">Tiêu đề</label>
                             <input type="text" class="form-control" asp-for="Title">
@@ -96,7 +98,7 @@
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label class="font-weight-semibold" for="productBrand">Ảnh đại diện</label>
-                            <img src="@url" width="600" height="400"/>
+                            <img src="@url" width="600" height="400" />
                             <input name="Avatar" type="file" class="form-control-file" asp-for="Avatar" />
                             <span asp-validation-for="Avatar" class="text-danger"></span>
                         </div>
@@ -115,3 +117,21 @@
     </div>
 </form>
 
+
+@section Script{
+    <script src="~/Adminassets/vendors/select2/select2.min.js"></script>
+    <script src="~/Adminassets/js/pages/e-commerce-product-edit.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.1/jquery.validate.min.js"></script>
+    <script src="~/Adminassets/summernote/summernote-bs4.js"></script>
+
+    <script>    jQuery(document).ready(function () {
+            $('.summernote').summernote({
+                fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New'],
+                styleTags: ['p', 'h1', 'h2', 'h3', 'h4', 'h5'],
+                height: 750,
+                minHeight: null,
+                maxHeight: null,
+                focus: true
+            });
+        });</script>
+}

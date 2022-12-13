@@ -21,18 +21,15 @@
                 <a class="btn btn-primary" asp-controller="New" asp-action="Add"><i class="anticon anticon-plus-circle m-r-5"></i><span>Tạo mới tin tức</span></a>
             </div>
             <div class="col-lg-4 text-right">
-
             </div>
         </div>
         <div class="table-responsive">
             <table class="table table-hover e-commerce-table">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Ảnh đại diện</th>
                         <th>Tiêu đề</th>
                         <th>Ngày tạo</th>
-                        <th>Hiển thị bảng tin</th>
+                        <th>Tin nóng</th>
                         <th>#</th>
                     </tr>
                 </thead>
@@ -41,14 +38,8 @@
                     {
                         foreach (var item in Model)
                         {
-                            string url = $"{HostConfig.Domain}/images/new/{item.Thumb}";
+                           
                             <tr>
-                                <td>@item.PostId</td>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <img class="img-fluid rounded" src="@url" style="max-width: 60px; height :60px" alt="">
-                                    </div>
-                                </td>
                                 <td>@item.Title</td>
                                 <td>@item.CreatedDate</td>
                                 <td>
@@ -57,15 +48,15 @@
 
 
                                         <div class="d-flex align-items-center">
-                                            <div class="badge badge-success badge-dot m-r-10"></div>
-                                            <div>Có</div>
+                                            <div class="badge badge-danger badge-dot m-r-10"></div>
+                                            <div>Tin nóng</div>
                                         </div>
                                     }
                                     else
                                     {
                                         <div class="d-flex align-items-center">
-                                            <div class="badge badge-danger badge-dot m-r-10"></div>
-                                            <div>Không</div>
+                                            <div class="badge badge-success badge-dot m-r-10"></div>
+                                            <div>Mặc định</div>
                                         </div>
                                     }
                                 </td>
@@ -87,34 +78,34 @@
     </div>
 </div>
 @section Script
-{
-<script>
-    $('body').off('click', '.delete').on('click', '.delete', ConfirmDelete);
-    function ConfirmDelete() {
-        var tranferId = $(this).data('id');
-        bootbox.confirm("Bạn chắc chắn muốn xóa", function (result) {
-            if (result) {
-                Delete(tranferId)
-            }
-        })
-    }
-    function Delete(transferId) {
-        $.ajax({
-            type: 'post',
-            url: '/New/Delete',
-            dataType: 'json',
-            data: { id: transferId },
-            success: function (response) {
-
-                if (response.statusCode == 200) {
-                    bootbox.alert("Xóa thành công", function () {
-                        location.reload()
-                    })
-                } else {
-                    bootbox.alert("Xảy ra lỗi")
+    {
+    <script>
+        $('body').off('click', '.delete').on('click', '.delete', ConfirmDelete);
+        function ConfirmDelete() {
+            var tranferId = $(this).data('id');
+            bootbox.confirm("Bạn chắc chắn muốn xóa", function (result) {
+                if (result) {
+                    Delete(tranferId)
                 }
-            }
-        })
-    }
-</script>
+            })
+        }
+        function Delete(transferId) {
+            $.ajax({
+                type: 'post',
+                url: '/New/Delete',
+                dataType: 'json',
+                data: { id: transferId },
+                success: function (response) {
+
+                    if (response.statusCode == 200) {
+                        bootbox.alert("Xóa thành công", function () {
+                            location.reload()
+                        })
+                    } else {
+                        bootbox.alert("Xảy ra lỗi")
+                    }
+                }
+            })
+        }
+    </script>
 }

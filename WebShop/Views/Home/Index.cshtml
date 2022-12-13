@@ -5,8 +5,10 @@
     var categories = ViewBag.categories as List<SharedObjects.ValueObjects.VProductCategory>;
 }
 @model SharedObjects.ViewModels.HomeViewModel;
+
+
 <!-- SLIDER AREA START (slider-3) -->
-<div class="ltn__slider-area ltn__slider-3---  section-bg-1--- mt-30">
+<div class="ltn__slider-area ltn__slider-3---  section-bg-1--- mt-15">
     <div class="container">
         <div class="row">
             <div class="col-lg-3">
@@ -101,8 +103,91 @@
     </div>
 </div>
 <!-- SLIDER AREA END -->
+<!-- BLOG AREA START (blog-3) -->
+<div class="ltn__blog-area pt-20 pb-15">
+    <div class="container">
+        <div class="row  ltn__blog-slider-one-active slick-arrow-1 ltn__blog-item-3-normal">
+            @foreach (var item in Model.News)
+            {
+                string url = $"{HostConfig.Domain}/images/new/{item.Thumb}";
+                <!-- Blog Item -->
+                <div class="col-lg-12">
+                    <div class="ltn__blog-item ltn__blog-item-3">
+                        <div class="ltn__blog-img">
+                            <a asp-controller="New" asp-action="Detail" asp-route-id="@item.PostId"><img width="400" height="260" src="@url" alt="#"></a>
+                        </div>
+                        <div class="product-badge">
+                            <ul>
+                                <li class="sale-badge">Bài đăng mới</li>
+                            </ul>
+                        </div>
+                        <div class="ltn__blog-brief">
+                            <div class="ltn__blog-meta">
+                                <ul>
+                                    <li class="ltn__blog-author">
+                                        <a href="#"><i class="far fa-user"></i>Tác giả: @item.UserName</a>
+                                    </li>
+                                    <li class="ltn__blog-tags">
+                                        <a href="#"><i class="fas fa-tags"></i>Tag</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <h3 class="ltn__blog-title"><a asp-controller="New" asp-action="Detail" asp-route-id="@item.PostId">@item.Title</a></h3>
+                            <div class="ltn__blog-meta-btn">
+                                <div class="ltn__blog-meta">
+                                    <ul>
+                                        <li class="ltn__blog-date"><i class="far fa-calendar-alt"></i>@item.CreatedDate.ToString("dd/MM/yyyy")</li>
+                                    </ul>
+                                </div>
+                                <div class="ltn__blog-btn">
+                                    <a asp-controller="New" asp-action="Detail" asp-route-id="@item.PostId">Đọc thêm</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Blog Item -->
+            }
+        </div>
+    </div>
+</div>
+<!-- BLOG AREA END -->
+<!-- PRODUCT TAB AREA START (product-item-3) -->
+<div class="ltn__product-tab-area ltn__product-gutter pt-20 pb-15">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title-area ltn__section-title-2--- text-center">
+                    <!-- <h6 class="section-subtitle ltn__secondary-color">// Cars</h6> -->
+                    <h1 class="section-title">Sản phẩm</h1>
+                </div>
+                <div class="ltn__tab-menu ltn__tab-menu-2 ltn__tab-menu-top-right-- text-uppercase text-center">
+                    <div class="nav">
+                        <a class="active show" data-toggle="tab" href="#all-items">Tất cả sản phẩm</a>
+                        @foreach (var item in Model.Products)
+                        {
+                            <a data-toggle="tab" href="#@item.category.Alias">@item.category.CatName</a>
+                        }
+                    </div>
+                </div>
+                <div class="tab-content">
+                    <div class="tab-pane fade active show" id="all-items">
+                        @await Html.PartialAsync("_ListProductPartialView", allProduct)
+                    </div>
+                    @foreach (var item in Model.Products)
+                    {
+                        <div class="tab-pane fade" id="@item.category.Alias">
+                            @await Html.PartialAsync("_ListProductPartialView", item.lsProducts)
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- PRODUCT TAB AREA END -->
 <!-- FEATURE AREA START ( Feature - 3) -->
-<div class="ltn__feature-area mt-35 mt--65---">
+<div class="ltn__feature-area">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -149,108 +234,6 @@
     </div>
 </div>
 <!-- FEATURE AREA END -->
-<!-- PRODUCT TAB AREA START (product-item-3) -->
-<div class="ltn__product-tab-area ltn__product-gutter pt-115 pb-70">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="section-title-area ltn__section-title-2--- text-center">
-                    <!-- <h6 class="section-subtitle ltn__secondary-color">// Cars</h6> -->
-                    <h1 class="section-title">Sản phẩm</h1>
-                </div>
-                <div class="ltn__tab-menu ltn__tab-menu-2 ltn__tab-menu-top-right-- text-uppercase text-center">
-                    <div class="nav">
-                        <a class="active show" data-toggle="tab" href="#all-items">Tất cả sản phẩm</a>
-                        @foreach (var item in Model.Products)
-                        {
-                            <a data-toggle="tab" href="#@item.category.Alias">@item.category.CatName</a>
-                        }
-                    </div>
-                </div>
-                <div class="tab-content">
-                    <div class="tab-pane fade active show" id="all-items">
-                        @await Html.PartialAsync("_ListProductPartialView", allProduct)
-                    </div>
-                    @foreach (var item in Model.Products)
-                    {
-                        <div class="tab-pane fade" id="@item.category.Alias">
-                            @await Html.PartialAsync("_ListProductPartialView", item.lsProducts)
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- PRODUCT TAB AREA END -->
-
-<!-- CATEGORY AREA START -->
-<div class="ltn__category-area section-bg-1 pt-110 pb-90">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="section-title-area ltn__section-title-2--- text-center">
-                    <h1 class="section-title white-color---">Danh mục sản phẩm</h1>
-                </div>
-            </div>
-        </div>
-        <div class="row ltn__category-slider-active slick-arrow-1">
-            <div class="col-12">
-                <div class="ltn__category-item ltn__category-item-3 text-center">
-                    <div class="ltn__category-item-img">
-                        <a asp-action="Index" asp-controller="Product">
-                            <img src="~/img/icons/icon-img/category-2.png" alt="Image">
-                        </a>
-                    </div>
-                    <div class="ltn__category-item-name">
-                        <h5><a asp-action="Index" asp-controller="Product">Rau củ</a></h5>
-                        <h6>(.. sản phẩm)</h6>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12">
-                <div class="ltn__category-item ltn__category-item-3 text-center">
-                    <div class="ltn__category-item-img">
-                        <a asp-action="Index" asp-controller="Product">
-                            <img src="~/img/icons/icon-img/category-3.png" alt="Image">
-                        </a>
-                    </div>
-                    <div class="ltn__category-item-name">
-                        <h5><a asp-action="Index" asp-controller="Product">Hoa quả</a></h5>
-                        <h6>(.. sản phẩm)</h6>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12">
-                <div class="ltn__category-item ltn__category-item-3 text-center">
-                    <div class="ltn__category-item-img">
-                        <a asp-action="Index" asp-controller="Product">
-                            <img src="~/img/icons/icon-img/category-4.png" alt="Image">
-                        </a>
-                    </div>
-                    <div class="ltn__category-item-name">
-                        <h5><a asp-action="Index" asp-controller="Product">Thịt</a></h5>
-                        <h6>(.. sản phẩm)</h6>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12">
-                <div class="ltn__category-item ltn__category-item-3 text-center">
-                    <div class="ltn__category-item-img">
-                        <a asp-action="Index" asp-controller="Product">
-                            <img src="~/img/icons/icon-img/category-3.png" alt="Image">
-                        </a>
-                    </div>
-                    <div class="ltn__category-item-name">
-                        <h5><a asp-action="Index" asp-controller="Product">Khác</a></h5>
-                        <h6>(.. sản phẩm)</h6>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- CATEGORY AREA END -->
 <!-- CALL TO ACTION START (call-to-action-2) -->
 <div class="ltn__call-to-action-area call-to-action-2 pt-20 pb-20" data-bg="img/1.jpg--">
     <div class="container">
@@ -268,7 +251,7 @@
 </div>
 <!-- CALL TO ACTION END -->
 <!-- BANNER AREA START -->
-<div class="ltn__banner-area mt-120">
+<div class="ltn__banner-area">
     <div class="container">
         <div class="row ltn__custom-gutter--- justify-content-center">
             <div class="col-lg-4 col-md-6">
@@ -296,57 +279,6 @@
     </div>
 </div>
 <!-- BANNER AREA END -->
-<!-- BLOG AREA START (blog-3) -->
-<div class="ltn__blog-area pt-115 pb-70">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="section-title-area ltn__section-title-2 text-center">
-                    <h1 class="section-title white-color---">Tin tức</h1>
-                </div>
-            </div>
-        </div>
-        <div class="row  ltn__blog-slider-one-active slick-arrow-1 ltn__blog-item-3-normal">
-            @foreach (var item in Model.News)
-            {
-                string url = $"{HostConfig.Domain}/images/new/{item.Thumb}";
-                <!-- Blog Item -->
-                <div class="col-lg-12">
-                    <div class="ltn__blog-item ltn__blog-item-3">
-                        <div class="ltn__blog-img">
-                            <a asp-controller="New" asp-action="Detail" asp-route-id="@item.PostId"><img width="370" height="260" src="@url" alt="#"></a>
-                        </div>
-                        <div class="ltn__blog-brief">
-                            <div class="ltn__blog-meta">
-                                <ul>
-                                    <li class="ltn__blog-author">
-                                        <a href="#"><i class="far fa-user"></i>Tác giả: @item.UserName</a>
-                                    </li>
-                                    <li class="ltn__blog-tags">
-                                        <a href="#"><i class="fas fa-tags"></i>Tag</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <h3 class="ltn__blog-title"><a asp-controller="New" asp-action="Detail" asp-route-id="@item.PostId">@item.Title</a></h3>
-                            <div class="ltn__blog-meta-btn">
-                                <div class="ltn__blog-meta">
-                                    <ul>
-                                        <li class="ltn__blog-date"><i class="far fa-calendar-alt"></i>@item.CreatedDate.ToString("dd/MM/yyyy")</li>
-                                    </ul>
-                                </div>
-                                <div class="ltn__blog-btn">
-                                    <a asp-controller="New" asp-action="Detail" asp-route-id="@item.PostId">Đọc thêm</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Blog Item -->
-            }
-        </div>
-    </div>
-</div>
-<!-- BLOG AREA END -->
 <!-- BRAND LOGO AREA START -->
 <div class="ltn__brand-logo-area ltn__brand-logo-1 section-bg-1 pt-110 pb-110 plr--9 d-none">
     <div class="container-fluid">
@@ -448,7 +380,8 @@
     </div>
 </div>
 @section Script{
-    <script>$('body').off('click', '.view').on('click', '.view', GetById);
+    <script>
+        $('body').off('click', '.view').on('click', '.view', GetById);
         function GetById() {
             var tranferId = $(this).data('id');
             $.ajax({

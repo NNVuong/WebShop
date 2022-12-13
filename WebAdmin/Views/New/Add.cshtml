@@ -4,10 +4,6 @@
     ViewData["Title"] = "Tạo mới tin tức";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-@section Styles{
-    <link href="~/Adminassets/summernote/summernote-bs4.css" rel="stylesheet" />
-    <link href="~/Adminassets/summernote/summernote.css" rel="stylesheet" />
-}
 
 <div class="page-header">
     <div class="header-sub-title">
@@ -60,7 +56,7 @@
                             <input type="checkbox" asp-for="IsNewFeed">
                             <label for="IsNewFeed"></label>
                         </div>
-                        <label>Hiển thị bảng tin</label>
+                        <label>Tin nóng</label>
                     </div>
                 </div>
             </div>
@@ -86,7 +82,7 @@
             $('.summernote').summernote({
                 fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New'],
                 styleTags: ['p', 'h1', 'h2', 'h3', 'h4', 'h5'],
-                height: 200,
+                height: 750,
                 minHeight: null,
                 maxHeight: null,
                 focus: true

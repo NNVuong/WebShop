@@ -31,7 +31,7 @@ namespace WebAdmin.Controllers
             var pageNumber = page == null || page <= 0 ? 1 : page.Value;
             var pageSize = 10;
             var news = await newService.GetAll();
-            var result = news.AsQueryable();
+            var result = news.OrderByDescending(x => x.IsNewFeed).ThenByDescending(x => x.CreatedDate).AsQueryable();
             PagedList<VNew> models = new PagedList<VNew>(result, pageNumber, pageSize);
             ViewBag.CurrentPage = pageNumber;
             return View(models);
